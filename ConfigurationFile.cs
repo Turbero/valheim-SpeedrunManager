@@ -2,16 +2,27 @@
 using BepInEx;
 using System;
 using System.IO;
+using UnityEngine;
 
 namespace SpeedrunManager
 {
     internal class ConfigurationFile
     {
         public static ConfigEntry<bool> debug;
+        public static ConfigEntry<bool> timerStarted;
 
         private static ConfigFile configFile;
-        private static string ConfigFileName = SpeedrunManager.GUID + ".cfg";
-        private static string ConfigFileFullPath = Paths.ConfigPath + Path.DirectorySeparatorChar + ConfigFileName;
+        private static readonly string ConfigFileName = SpeedrunManager.GUID + ".cfg";
+        private static readonly string ConfigFileFullPath = Paths.ConfigPath + Path.DirectorySeparatorChar + ConfigFileName;
+        
+        //Timer configuration
+        public static ConfigEntry<Vector2> positionTimer;
+        public static ConfigEntry<Color> colorTimer;
+        public static ConfigEntry<float> fontSizeTimer;
+        
+        //Speedrun configuration
+        public static ConfigEntry<int> numberOfLives;
+        public static ConfigEntry<int> numberOfLivesLeft;
 
         internal static void LoadConfig(BaseUnityPlugin plugin)
         {
@@ -19,6 +30,15 @@ namespace SpeedrunManager
                 configFile = plugin.Config;
 
                 debug = configFile.Bind("1 - General", "DebugMode", false, "Enabling/Disabling the debugging in the console (default = false)");
+                timerStarted = configFile.Bind("1 - General", "Speedrun Active", false, "Enabling/Disabling the speedrun");
+                
+                positionTimer = configFile.Bind("2 - UI Timer", "Position", new Vector2(900, -20), new ConfigDescription("UI Timer position"));
+                colorTimer = configFile.Bind("2 - UI Timer", "Color", new Color(1f, 0.7176f, 0.3603f), new ConfigDescription("UI Timer color"));
+                fontSizeTimer = configFile.Bind("2 - UI Timer", "Size", 32f, new ConfigDescription("UI Timer size"));
+                    
+                numberOfLives = configFile.Bind("3 - Configuration", "Number Of Lives Max.", 1, new ConfigDescription("Number of Lives max"));
+                numberOfLivesLeft = configFile.Bind("3 - Configuration", "Number Of Lives Left", 0, new ConfigDescription("Enabling/Disabling the debugging in the console (default = false)"));
+
                 SetupWatcher();
             }
         }
@@ -51,7 +71,15 @@ namespace SpeedrunManager
 
         private static void SettingsChanged(object sender, EventArgs e)
         {
-            
+            if (SpeedrunTimer._text != null)
+            {
+                SpeedrunTimer._text.color = colorTimer.Value;
+                SpeedrunTimer._text.outlineColor = new Color32(
+                    byte.Parse((colorTimer.Value.r * 255f).ToGlobalInvariantString()),
+                    byte.Parse((colorTimer.Value.g * 255f).ToGlobalInvariantString()),
+                    byte.Parse((colorTimer.Value.b * 255f).ToGlobalInvariantString()),
+                    byte.Parse("255"));
+            }
         }
     }
 }

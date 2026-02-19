@@ -80,6 +80,7 @@
     <Compile Include="ModUtils.cs" />
     <Compile Include="SpeedrunManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpeedrunTimer.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
