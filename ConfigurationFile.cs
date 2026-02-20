@@ -35,7 +35,7 @@ namespace SpeedrunManager
                 
                 positionTimer = configFile.Bind("2 - UI Timer", "Position", new Vector2(900, -20), new ConfigDescription("UI Timer position"));
                 colorTimer = configFile.Bind("2 - UI Timer", "Color", new Color(1f, 0.7176f, 0.3603f), new ConfigDescription("UI Timer color"));
-                colorWidthTimer = configFile.Bind("2 - UI Timer", "Color Intensity", 0.25f, new ConfigDescription("UI Timer color intensity (recommended between 0 and 0.5f)"));
+                colorWidthTimer = configFile.Bind("2 - UI Timer", "Color Intensity", 0.15f, new ConfigDescription("UI Timer color intensity (recommended between 0 and 0.5f)"));
                 fontSizeTimer = configFile.Bind("2 - UI Timer", "Size", 32f, new ConfigDescription("UI Timer size"));
                     
                 numberOfLives = configFile.Bind("3 - Configuration", "Number Of Lives Max.", 1, new ConfigDescription("Number of Lives max"));
