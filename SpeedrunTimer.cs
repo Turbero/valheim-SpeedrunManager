@@ -29,10 +29,15 @@ namespace SpeedrunManager
             _text = textObj.GetComponent<TextMeshProUGUI>();
             _text.fontSize = ConfigurationFile.fontSizeTimer.Value;
             _text.alignment = TextAlignmentOptions.Left;
-            _text.color = new Color(1f, 0.7176f, 0.3603f);
             _text.font = ModUtils.getFontAsset("Valheim-Norse");
 
-            _text.outlineColor = new Color32(255, 183, 92, 255);
+            _text.color = ConfigurationFile.colorTimer.Value;
+            _text.outlineColor = new Color32(
+                byte.Parse((ConfigurationFile.colorTimer.Value.r * 255f).ToGlobalInvariantString()),
+                byte.Parse((ConfigurationFile.colorTimer.Value.g * 255f).ToGlobalInvariantString()),
+                byte.Parse((ConfigurationFile.colorTimer.Value.b * 255f).ToGlobalInvariantString()),
+                byte.Parse("255"));
+            _text.outlineWidth = ConfigurationFile.colorWidthTimer.Value;
         }
 
         public static void Update()
@@ -68,6 +73,11 @@ namespace SpeedrunManager
             // Reload config values
             rect.anchoredPosition = ConfigurationFile.positionTimer.Value;
             _text.fontSize = ConfigurationFile.fontSizeTimer.Value;
+            _text.outlineColor = new Color32(
+                byte.Parse((ConfigurationFile.colorTimer.Value.r * 255f).ToGlobalInvariantString()),
+                byte.Parse((ConfigurationFile.colorTimer.Value.g * 255f).ToGlobalInvariantString()),
+                byte.Parse((ConfigurationFile.colorTimer.Value.b * 255f).ToGlobalInvariantString()),
+                byte.Parse("255"));
         }
 
         private static float GetTotalPlaytimeSeconds()
