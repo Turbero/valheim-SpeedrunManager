@@ -11,6 +11,14 @@ namespace SpeedrunManager
         private static RectTransform rect;
         public static TextMeshProUGUI _text;
 
+        // Hybrid timer variables
+        private static double _lastRealtime;
+        private static double _displayedTime;
+        private static float _lastStatTime;
+
+        // Cache stats
+        private static Dictionary<PlayerStatType, float> _cachedStats;
+
         public static void Create(Hud hud)
         {
             if (_text != null)
@@ -31,12 +39,18 @@ namespace SpeedrunManager
             _text.alignment = TextAlignmentOptions.Left;
             _text.font = ModUtils.getFontAsset("Valheim-Norse");
 
+            UpdateColor();
+        }
+
+        private static void UpdateColor()
+        {
             _text.color = ConfigurationFile.colorTimer.Value;
             _text.outlineColor = new Color32(
-                byte.Parse((ConfigurationFile.colorTimer.Value.r * 255f).ToGlobalInvariantString()),
-                byte.Parse((ConfigurationFile.colorTimer.Value.g * 255f).ToGlobalInvariantString()),
-                byte.Parse((ConfigurationFile.colorTimer.Value.b * 255f).ToGlobalInvariantString()),
-                byte.Parse("255"));
+                (byte)(ConfigurationFile.colorTimer.Value.r * 255f),
+                (byte)(ConfigurationFile.colorTimer.Value.g * 255f),
+                (byte)(ConfigurationFile.colorTimer.Value.b * 255f),
+                255);
+
             _text.outlineWidth = ConfigurationFile.colorWidthTimer.Value;
         }
 
@@ -45,22 +59,32 @@ namespace SpeedrunManager
             if (_text == null)
                 return;
 
-            if (Player.m_localPlayer == null)
+            if (Game.instance == null || Player.m_localPlayer == null)
+            {
+                _cachedStats = null;
                 return;
+            }
 
             if (Time.timeScale == 0f)
                 return;
 
+            // Inicio del timer
             if (!ConfigurationFile.timerStarted.Value)
             {
                 if (Player.m_localPlayer.CanMove())
                 {
-                    Logger.Log("Can move now!");
                     ConfigurationFile.timerStarted.Value = true;
-                    //reset stats to avoid counting the time player was in the intro or flying with huginn
-                    Dictionary<PlayerStatType, float> mStats = getPlayerDictionaryStats();
-                    mStats.IncrementOrSet(PlayerStatType.TimeInBase, mStats.GetValueSafe(PlayerStatType.TimeInBase) * -1);
-                    mStats.IncrementOrSet(PlayerStatType.TimeOutOfBase, mStats.GetValueSafe(PlayerStatType.TimeOutOfBase) * -1);
+
+                    var stats = GetStats();
+                    if (stats != null)
+                    {
+                        stats.IncrementOrSet(PlayerStatType.TimeInBase, stats.GetValueSafe(PlayerStatType.TimeInBase) * -1);
+                        stats.IncrementOrSet(PlayerStatType.TimeOutOfBase, stats.GetValueSafe(PlayerStatType.TimeOutOfBase) * -1);
+                    }
+
+                    _lastRealtime = Time.realtimeSinceStartupAsDouble;
+                    _displayedTime = 0;
+                    _lastStatTime = 0;
                 }
                 else
                 {
@@ -68,28 +92,56 @@ namespace SpeedrunManager
                 }
             }
 
-            _text.text = FormatTime(GetTotalPlaytimeSeconds());
+            float statTime = GetTotalPlaytimeSeconds();
+
+            double now = Time.realtimeSinceStartupAsDouble;
+            double deltaRealtime = now - _lastRealtime;
+            _lastRealtime = now;
+
+            // Avance visual fluido
+            _displayedTime += deltaRealtime;
+
+            // Resincronización cuando el stat oficial cambia
+            if (statTime > _lastStatTime)
+            {
+                _displayedTime = statTime;
+                _lastStatTime = statTime;
+            }
+
+            _text.text = FormatTime((float)_displayedTime);
 
             // Reload config values
             rect.anchoredPosition = ConfigurationFile.positionTimer.Value;
             _text.fontSize = ConfigurationFile.fontSizeTimer.Value;
-            _text.outlineColor = new Color32(
-                byte.Parse((ConfigurationFile.colorTimer.Value.r * 255f).ToGlobalInvariantString()),
-                byte.Parse((ConfigurationFile.colorTimer.Value.g * 255f).ToGlobalInvariantString()),
-                byte.Parse((ConfigurationFile.colorTimer.Value.b * 255f).ToGlobalInvariantString()),
-                byte.Parse("255"));
+            _text.color = ConfigurationFile.colorTimer.Value;
+            UpdateColor();
         }
 
         private static float GetTotalPlaytimeSeconds()
         {
-            if (Game.instance == null)
+            var stats = GetStats();
+            if (stats == null)
                 return 0f;
 
-            Dictionary<PlayerStatType, float> stats = getPlayerDictionaryStats();
             float inBase = stats.GetValueSafe(PlayerStatType.TimeInBase);
             float outBase = stats.GetValueSafe(PlayerStatType.TimeOutOfBase);
 
             return inBase + outBase;
+        }
+
+        private static Dictionary<PlayerStatType, float> GetStats()
+        {
+            if (_cachedStats != null)
+                return _cachedStats;
+
+            if (Game.instance == null)
+                return null;
+
+            var field = typeof(Game).GetField("m_playerProfile", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            var profile = (PlayerProfile)field?.GetValue(Game.instance);
+            _cachedStats = profile?.m_playerStats.m_stats;
+            return _cachedStats;
         }
 
         private static string FormatTime(float seconds)
@@ -107,12 +159,6 @@ namespace SpeedrunManager
         public static bool IsCreated()
         {
             return _text != null;
-        }
-        
-        private static Dictionary<PlayerStatType, float> getPlayerDictionaryStats()
-        {
-            var field = typeof(Game).GetField("m_playerProfile", BindingFlags.Instance | BindingFlags.NonPublic);
-            return ((PlayerProfile)field?.GetValue(Game.instance))?.m_playerStats.m_stats;
         }
     }
 }
