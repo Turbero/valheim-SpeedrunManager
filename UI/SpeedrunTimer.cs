@@ -4,7 +4,7 @@ using HarmonyLib;
 using TMPro;
 using UnityEngine;
 
-namespace SpeedrunManager
+namespace SpeedrunManager.UI
 {
     public static class SpeedrunTimer
     {

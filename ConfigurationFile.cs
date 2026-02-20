@@ -2,6 +2,7 @@
 using BepInEx;
 using System;
 using System.IO;
+using SpeedrunManager.UI;
 using UnityEngine;
 
 namespace SpeedrunManager

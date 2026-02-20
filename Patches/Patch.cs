@@ -1,6 +1,7 @@
 using HarmonyLib;
+using SpeedrunManager.UI;
 
-namespace SpeedrunManager
+namespace SpeedrunManager.Patches
 {
     [HarmonyPatch(typeof(Hud), "Update")]
     public static class Hud_Update_Patch

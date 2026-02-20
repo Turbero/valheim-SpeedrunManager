@@ -1,3 +1,5 @@
+using SpeedrunManager.Patches;
+
 namespace SpeedrunManager
 {
     public class SplitsCommands {

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using SpeedrunManager.UI;
 
-namespace SpeedrunManager
+namespace SpeedrunManager.Patches
 {
     [HarmonyPatch(typeof(Player), nameof(Player.GetKnownTexts))]
     public class FixCompendium
