@@ -25,6 +25,10 @@ namespace SpeedrunManager.Patches
                 string bossName = __instance.name.Replace("(Clone)", "");
                 string timerValue = SpeedrunTimer._text.text;
                 setupBossSplitTime(bossName, timerValue, false);
+                
+                Logger.Log("Gonna parse "+bossName+"...");
+                Split split = new Split(ModUtils.parseBossName(bossName), timerValue);
+                SpeedrunTimer.AddNewSplit(split);
             }
         }
 

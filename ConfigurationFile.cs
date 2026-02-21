@@ -23,6 +23,7 @@ namespace SpeedrunManager
         public static ConfigEntry<float> fontSizeTimer;
         
         //Speedrun configuration
+        public static ConfigEntry<bool> showSplits;
         public static ConfigEntry<int> numberOfLives;
         public static ConfigEntry<int> numberOfLivesLeft;
 
@@ -34,11 +35,12 @@ namespace SpeedrunManager
                 debug = configFile.Bind("1 - General", "DebugMode", false, "Enabling/Disabling the debugging in the console (default = false)");
                 timerStarted = configFile.Bind("1 - General", "Speedrun Active", false, "Enabling/Disabling the speedrun (DO NOT CHANGE IN-GAME! ONLY FROM MAIN SCREEN)");
                 
-                positionTimer = configFile.Bind("2 - UI Timer", "Position", new Vector2(900, -20), new ConfigDescription("UI Timer position"));
+                positionTimer = configFile.Bind("2 - UI Timer", "Position", new Vector2(870, -20), new ConfigDescription("UI Timer position"));
                 colorTimer = configFile.Bind("2 - UI Timer", "Color", new Color(1f, 0.7176f, 0.3603f), new ConfigDescription("UI Timer color"));
                 colorWidthTimer = configFile.Bind("2 - UI Timer", "Color Intensity", 0.15f, new ConfigDescription("UI Timer color intensity (recommended between 0 and 0.5f)"));
                 fontSizeTimer = configFile.Bind("2 - UI Timer", "Size", 32f, new ConfigDescription("UI Timer size"));
                     
+                showSplits = configFile.Bind("3 - Configuration", "Show Splits", true, "Show/hide splits information");
                 numberOfLives = configFile.Bind("3 - Configuration", "Number Of Lives Max.", 1, new ConfigDescription("Number of Lives max"));
                 numberOfLivesLeft = configFile.Bind("3 - Configuration", "Number Of Lives Left", 0, new ConfigDescription("Number of Lives Left"));
 
@@ -74,6 +76,7 @@ namespace SpeedrunManager
 
         private static void SettingsChanged(object sender, EventArgs e)
         {
+            SpeedrunTimer.goSplitsTimers.SetActive(showSplits.Value);
             if (SpeedrunTimer._text != null)
             {
                 SpeedrunTimer._text.color = colorTimer.Value;

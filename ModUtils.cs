@@ -17,6 +17,11 @@ namespace SpeedrunManager
             return obj.GetType().GetField(name, bindingAttr)?.GetValue(obj);
         }
         
+        public static BossNameEnum parseBossName(string value) {
+            Logger.Log("Parsing value: " + value);
+            return (BossNameEnum) Enum.Parse(typeof(BossNameEnum), value, true);
+        }
+        
         public static TMP_FontAsset getFontAsset(String name)
         {
             if (!cachedFonts.ContainsKey(name))
