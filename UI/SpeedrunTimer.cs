@@ -20,6 +20,7 @@ namespace SpeedrunManager.UI
 
         // Cache stats
         private static Dictionary<PlayerStatType, float> _cachedStats;
+        private static Dictionary<string, string> _cachedKnownNames;
         
         // Splits
         private static List<Split> splits = new List<Split>();
@@ -65,7 +66,7 @@ namespace SpeedrunManager.UI
         {
             Logger.Log("Loading splits...");
             string worldName = ZNet.instance?.GetWorldName();
-            var dicKnownTexts = (Dictionary<string, string>)ModUtils.GetPrivateValue(Player.m_localPlayer, "m_knownTexts");
+            var dicKnownTexts = GetKnownNames();
             
             bool hasSplit = dicKnownTexts.TryGetValue(SpeedrunManager.GUID + "_" + worldName + "_Eikthyr", out var result);
             if (hasSplit)
@@ -191,10 +192,14 @@ namespace SpeedrunManager.UI
                 return;
 
             // Inicio del timer
+            /*string worldName = ZNet.instance?.GetWorldName();
+            bool hasValue = GetKnownNames().TryGetValue(SpeedrunManager.GUID + "_" + worldName + "_TimerStarted", out string isTimerStarted);
+            if (!hasValue || !isTimerStarted.Equals("true")) //Timer not started yet*/
             if (!ConfigurationFile.timerStarted.Value)
             {
                 if (Player.m_localPlayer.CanMove())
                 {
+                    /* Start timer from zero */
                     ConfigurationFile.timerStarted.Value = true;
 
                     var stats = GetStats();
@@ -249,6 +254,19 @@ namespace SpeedrunManager.UI
             float outBase = stats.GetValueSafe(PlayerStatType.TimeOutOfBase);
 
             return inBase + outBase;
+        }
+
+        private static Dictionary<string, string> GetKnownNames()
+        {
+            if (_cachedKnownNames != null)
+                return _cachedKnownNames;
+
+            if (Player.m_localPlayer == null)
+                return null;
+            
+            var dicKnownTexts = (Dictionary<string, string>)ModUtils.GetPrivateValue(Player.m_localPlayer, "m_knownTexts");
+            _cachedKnownNames = dicKnownTexts;
+            return _cachedKnownNames;
         }
 
         private static Dictionary<PlayerStatType, float> GetStats()
