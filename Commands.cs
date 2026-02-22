@@ -24,6 +24,16 @@ namespace SpeedrunManager
                     SpeedrunTimer.AddNewSplit(split);
                 }
             });
+            new Terminal.ConsoleCommand("speedrun_reset", "", args =>
+            {
+                if (args.Args.Length < 1)
+                {
+                    args.Context.AddString("Usage: speedrun_reset");
+                    return;
+                }
+
+                ConfigurationFile.timerStarted.Value = false; //will trigger configuration change
+            });
         }
     }
 }
