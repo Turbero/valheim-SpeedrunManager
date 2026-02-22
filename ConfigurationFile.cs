@@ -10,7 +10,7 @@ namespace SpeedrunManager
     internal class ConfigurationFile
     {
         public static ConfigEntry<bool> debug;
-        public static ConfigEntry<KeyCode> hotkey;
+        public static ConfigEntry<KeyCode> hotKey;
         [Obsolete("To be removed")]
         public static ConfigEntry<bool> timerStarted;
 
@@ -26,10 +26,8 @@ namespace SpeedrunManager
         
         //Speedrun configuration
         public static ConfigEntry<bool> showSplits;
-        public static ConfigEntry<bool> stopTimerAfterDyingFirstTime;
-        public static ConfigEntry<Color> colorTimerAfterDyingFirstTime;
-        public static ConfigEntry<int> numberOfLives;
-        public static ConfigEntry<int> numberOfLivesLeft;
+        public static ConfigEntry<bool> stopTimerAfterDyingFirstTime; //TODO
+        public static ConfigEntry<Color> colorTimerAfterDyingFirstTime; //TODO
 
         internal static void LoadConfig(BaseUnityPlugin plugin)
         {
@@ -38,19 +36,17 @@ namespace SpeedrunManager
 
                 debug = configFile.Bind("1 - General", "DebugMode", false, "Enabling/Disabling the debugging in the console (default = false)");
                 timerStarted = configFile.Bind("1 - General", "Speedrun Active", false, "Enabling/Disabling the speedrun (DO NOT CHANGE IN-GAME! ONLY FROM MAIN SCREEN)");
-                hotkey = configFile.Bind("1 - General", "Speedrun Hotkey Panel", KeyCode.Y, "Key to show/hide the speedrun panel configuration");
+                hotKey = configFile.Bind("1 - General", "Speedrun Hotkey Panel", KeyCode.Y, "Key to show/hide the speedrun panel configuration");
 
                 positionTimer = configFile.Bind("2 - UI Timer", "Position", new Vector2(870, -20), new ConfigDescription("UI Timer position"));
                 colorTimer = configFile.Bind("2 - UI Timer", "Color", new Color(1f, 0.7176f, 0.3603f), new ConfigDescription("UI Timer color"));
                 colorWidthTimer = configFile.Bind("2 - UI Timer", "Color Intensity", 0.15f, new ConfigDescription("UI Timer color intensity (recommended between 0 and 0.5f)"));
                 fontSizeTimer = configFile.Bind("2 - UI Timer", "Size", 32f, new ConfigDescription("UI Timer size"));
-                    
+                colorTimerAfterDyingFirstTime = configFile.Bind("2 - UI Timer", "Timer Color After Dying for First Time", new Color(1, 0, 0), "Timer color after dying for first time");
+
                 showSplits = configFile.Bind("3 - Configuration", "Show Splits", true, "Show/hide splits information");
                 stopTimerAfterDyingFirstTime = configFile.Bind("3 - Configuration", "Stop Timer After Dying for First Time", false, "Stops the timer after dying for first time");
-                colorTimerAfterDyingFirstTime = configFile.Bind("3 - Configuration", "Timer Color After Dying for First Time", new Color(1, 0, 0, 1), "Timer color after dying for first time");
-                numberOfLives = configFile.Bind("3 - Configuration", "Number Of Lives Max.", 1, new ConfigDescription("Number of Lives max"));
-                numberOfLivesLeft = configFile.Bind("3 - Configuration", "Number Of Lives Left", 0, new ConfigDescription("Number of Lives Left"));
-
+                
                 SetupWatcher();
             }
         }
