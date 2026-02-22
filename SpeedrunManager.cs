@@ -38,5 +38,41 @@ namespace SpeedrunManager
             // Commands registration
             SplitsCommands.RegisterConsoleCommand();
         }
+        
+        void Update()
+        {
+            if (!Player.m_localPlayer || !InventoryGui.instance) return;
+
+            // Check if certain keys are hit to close Almanac GUI
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab) || Player.m_localPlayer.IsDead())
+            {
+                hideSpeedrunPanel();
+            }
+
+            // Hotkey to open/close skills dialog (if game is not paused)
+            if (Input.GetKeyDown(ConfigurationFile.hotKey.Value) && Time.timeScale > 0)
+            {
+                if (Hud.instance.gameObject.activeSelf)
+                {
+                    hideSpeedrunPanel();
+                }
+                else
+                {
+                    showSpeedrunPanel();
+                }
+            }
+        }
+
+        private void hideSpeedrunPanel()
+        {
+            //TODO
+            
+        }
+
+        private void showSpeedrunPanel()
+        {
+            //TODO
+            
+        }
     }
 }
