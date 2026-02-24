@@ -84,6 +84,7 @@
     <Compile Include="Commands.cs" />
     <Compile Include="ConfigurationFile.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="ModStatsUtils.cs" />
     <Compile Include="ModUtils.cs" />
     <Compile Include="Patches\Patch.cs" />
     <Compile Include="Patches\Splits.cs" />

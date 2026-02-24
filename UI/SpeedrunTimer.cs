@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Reflection;
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
@@ -72,43 +71,43 @@ namespace SpeedrunManager.UI
         {
             Logger.Log("Loading splits...");
             
-            string result = GetSpeedrunKnownTextValue("Eikthyr");
+            string result = ModStatsUtils.GetSpeedrunKnownTextValue("Eikthyr");
             if (result != null)
             {
                 Logger.Log("Found split for Eikthyr...");
                 splits.Add(new Split(BossNameEnum.Eikthyr, result));
             }
-            result = GetSpeedrunKnownTextValue("gd_king");
+            result = ModStatsUtils.GetSpeedrunKnownTextValue("gd_king");
             if (result != null)
             {
                 Logger.Log("Found split for The Elder...");
                 splits.Add(new Split(BossNameEnum.gd_king, result));
             }
-            result = GetSpeedrunKnownTextValue("Bonemass");
+            result = ModStatsUtils.GetSpeedrunKnownTextValue("Bonemass");
             if (result != null)
             {
                 Logger.Log("Found split for Bonemass...");
                 splits.Add(new Split(BossNameEnum.Bonemass, result));
             }
-            result = GetSpeedrunKnownTextValue("Dragon");
+            result = ModStatsUtils.GetSpeedrunKnownTextValue("Dragon");
             if (result != null)
             {
                 Logger.Log("Found split for Moder...");
                 splits.Add(new Split(BossNameEnum.Dragon, result));
             }
-            result = GetSpeedrunKnownTextValue("GoblinKing");
+            result = ModStatsUtils.GetSpeedrunKnownTextValue("GoblinKing");
             if (result != null)
             {
                 Logger.Log("Found split for Yagluth...");
                 splits.Add(new Split(BossNameEnum.GoblinKing, result));
             }
-            result = GetSpeedrunKnownTextValue("SeekerQueen");
+            result = ModStatsUtils.GetSpeedrunKnownTextValue("SeekerQueen");
             if (result != null)
             {
                 Logger.Log("Found split for The Queen...");
                 splits.Add(new Split(BossNameEnum.SeekerQueen, result));
             }
-            result = GetSpeedrunKnownTextValue("Fader");
+            result = ModStatsUtils.GetSpeedrunKnownTextValue("Fader");
             if (result != null)
             {
                 Logger.Log("Found split for Fader...");
@@ -200,12 +199,12 @@ namespace SpeedrunManager.UI
             }
 
             // Timer start check
-            bool isTimerStarted = "true".Equals(GetSpeedrunKnownTextValue("TimerStarted"));
+            bool isTimerStarted = "true".Equals(ModStatsUtils.GetSpeedrunKnownTextValue("TimerStarted"));
             if (!isTimerStarted) //Timer not started yet
             {
                 /* Start timer from zero */
                 Logger.Log("Starting speedrun...");
-                SetSpeedrunKnownTextKeyValue("TimerStarted", "true");
+                ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStarted", "true");
 
                 /*var stats = GetStats();
                 if (stats != null)
@@ -243,7 +242,7 @@ namespace SpeedrunManager.UI
 
         private static float GetTotalPlaytimeSeconds()
         {
-            var stats = GetStats();
+            var stats = ModStatsUtils.GetStats();
             if (stats == null)
                 return 0f;
 
@@ -251,25 +250,6 @@ namespace SpeedrunManager.UI
             float outBase = stats.GetValueSafe(PlayerStatType.TimeOutOfBase);
 
             return inBase + outBase;
-        }
-
-        private static Dictionary<string, string> GetKnownTexts()
-        {
-            if (Player.m_localPlayer == null)
-                return null;
-            
-            return (Dictionary<string, string>)ModUtils.GetPrivateValue(Player.m_localPlayer, "m_knownTexts");
-        }
-
-        private static Dictionary<PlayerStatType, float> GetStats()
-        {
-            if (Game.instance == null)
-                return null;
-
-            var field = typeof(Game).GetField("m_playerProfile", BindingFlags.Instance | BindingFlags.NonPublic);
-
-            var profile = (PlayerProfile)field?.GetValue(Game.instance);
-            return profile?.m_playerStats.m_stats;
         }
 
         private static string FormatTime(float seconds)
@@ -297,38 +277,19 @@ namespace SpeedrunManager.UI
 
         public static void StopTimer()
         {
-            SetSpeedrunKnownTextKeyValue("TimerStopped", _text.text);
+            ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStopped", _text.text);
             UpdateTimerUI();
         }
 
         private static bool IsTimerStopped()
         {
-            return GetSpeedrunKnownTextValue("TimerStopped") != null;
-        }
-
-        private static string GetSpeedrunKnownTextKey(string name)
-        {
-            var worldName = ZNet.instance?.GetWorldName();
-            return SpeedrunManager.GUID + "_" + worldName + "_" + name;
-        }
-        
-        private static string GetSpeedrunKnownTextValue(string name)
-        {
-            return GetKnownTexts().GetValueOrDefaultPiktiv(GetSpeedrunKnownTextKey(name), null);
-        }
-        
-        private static void SetSpeedrunKnownTextKeyValue(string name, string value)
-        {
-            var dicKnownTexts = GetKnownTexts();
-            var keyName = GetSpeedrunKnownTextKey(name);
-            dicKnownTexts.Remove(keyName);
-            dicKnownTexts.Add(keyName, value);
+            return ModStatsUtils.GetSpeedrunKnownTextValue("TimerStopped") != null;
         }
 
         private static bool HasPlayerDeadAlreadyInPermadeath()
         {
             return ConfigurationFile.speedrunType.Value == SpeedrunType.Permadeath &&
-                   GetStats().GetValueOrDefaultPiktiv(PlayerStatType.Deaths, 0) > 0;
+                   ModStatsUtils.GetStats().GetValueOrDefaultPiktiv(PlayerStatType.Deaths, 0) > 0;
         }
     }
 }
