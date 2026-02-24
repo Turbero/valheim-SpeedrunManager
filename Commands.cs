@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using SpeedrunManager.Patches;
 using SpeedrunManager.UI;
 
@@ -32,7 +33,22 @@ namespace SpeedrunManager
                     return;
                 }
 
-                ConfigurationFile.timerStarted.Value = false; //will trigger configuration change
+                if (Player.m_localPlayer == null)
+                    return;
+
+                if (ZNet.instance == null)
+                    return;
+
+                var dicKnownTexts = (Dictionary<string, string>)ModUtils.GetPrivateValue(Player.m_localPlayer, "m_knownTexts");
+                List<string> keysToDelete = new List<string>();
+                string worldName = ZNet.instance.GetWorldName();
+                
+                foreach (var key in dicKnownTexts.Keys)
+                    if (key.StartsWith(SpeedrunManager.GUID + "_" + worldName))
+                        keysToDelete.Add(key);
+
+                foreach (var key in keysToDelete)
+                    dicKnownTexts.Remove(key);
             });
         }
     }

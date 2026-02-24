@@ -20,15 +20,23 @@ namespace SpeedrunManager.Patches
         // This will be executed in the player that hits last when the boss dies
         public static void Postfix(Character __instance)
         {
-            if (__instance != null && __instance.IsBoss())
+            if (__instance == null) return;
+            
+            if (__instance.IsBoss())
             {
                 string bossName = __instance.name.Replace("(Clone)", "");
                 string timerValue = SpeedrunTimer._text.text;
                 setupBossSplitTime(bossName, timerValue, false);
                 
                 Logger.Log("Gonna parse "+bossName+"...");
-                Split split = new Split(ModUtils.parseBossName(bossName), timerValue);
+                BossNameEnum bossNameEnum = ModUtils.parseBossName(bossName);
+                Split split = new Split(bossNameEnum, timerValue);
                 SpeedrunTimer.AddNewSplit(split);
+            }
+
+            if (ConfigurationFile.speedrunType.Value == SpeedrunType.Permadeath && __instance.IsPlayer())
+            {
+                SpeedrunTimer.StopTimer();
             }
         }
 
