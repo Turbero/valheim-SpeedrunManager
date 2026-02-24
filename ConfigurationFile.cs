@@ -31,6 +31,7 @@ namespace SpeedrunManager
         //Speedrun configuration
         public static ConfigEntry<bool> showSplits;
         public static ConfigEntry<Color> colorTimerAfterDyingInPermadeath;
+        public static ConfigEntry<bool> countHuginnInitTravelAsPartOfTimer;
 
         internal static void LoadConfig(BaseUnityPlugin plugin)
         {
@@ -48,7 +49,8 @@ namespace SpeedrunManager
 
                 speedrunType =  configFile.Bind("3 - Configuration", "Speedrun Type", SpeedrunType.Permadeath, new ConfigDescription("Speedrun type"));
                 showSplits = configFile.Bind("3 - Configuration", "Show Splits", true, new ConfigDescription("Show/hide splits information"));
-                
+                countHuginnInitTravelAsPartOfTimer = configFile.Bind("3 - Configuration", "Count from Huginn Intro", false, new ConfigDescription("If active, the time will start since Huginn is taking you to the spawn, that's ~1min47seg (default = false)"));
+                    
                 SetupWatcher();
             }
         }

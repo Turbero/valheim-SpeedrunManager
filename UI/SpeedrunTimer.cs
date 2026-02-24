@@ -8,9 +8,9 @@ namespace SpeedrunManager.UI
 {
     public static class SpeedrunTimer
     {
-        public static RectTransform rect;
+        private static RectTransform rect;
         public static TextMeshProUGUI _text;
-        public static GameObject goSplitsTimers;
+        private static GameObject goSplitsTimers;
         
         // Splits
         private static readonly List<Split> splits = new List<Split>();
@@ -64,7 +64,8 @@ namespace SpeedrunManager.UI
                 255);
             _text.outlineWidth = ConfigurationFile.colorWidthTimer.Value;
             
-            goSplitsTimers.SetActive(ConfigurationFile.showSplits.Value);
+            if (goSplitsTimers != null)
+                goSplitsTimers.SetActive(ConfigurationFile.showSplits.Value);
         }
 
         private static void LoadSplits()
@@ -180,42 +181,43 @@ namespace SpeedrunManager.UI
         
         public static void Update()
         {
-            if (_text == null || Game.instance == null || Player.m_localPlayer == null)
-                return;
-
-            if (!Player.m_localPlayer.CanMove())
+            if (_text == null || Game.instance == null)
                 return;
             
             if (Time.timeScale == 0f)
                 return;
 
-            if (IsTimerStopped())
+            if (Player.m_localPlayer == null || !Player.m_localPlayer.CanMove())
                 return;
-
+            
             if (!splitsLoaded)
             {
                 LoadSplits();
                 splitsLoaded = true;
             }
 
+            if (IsTimerStopped())
+                return;
+
             // Timer start check
-            bool isTimerStarted = "true".Equals(ModStatsUtils.GetSpeedrunKnownTextValue("TimerStarted"));
-            if (!isTimerStarted) //Timer not started yet
+            if (!"true".Equals(ModStatsUtils.GetSpeedrunKnownTextValue("TimerStarted"))) //Timer not started yet
             {
-                /* Start timer from zero */
                 Logger.Log("Starting speedrun...");
                 ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStarted", "true");
 
-                /*var stats = GetStats();
-                if (stats != null)
+                if (ConfigurationFile.countHuginnInitTravelAsPartOfTimer.Value)
                 {
-                    stats.IncrementOrSet(PlayerStatType.TimeInBase, stats.GetValueSafe(PlayerStatType.TimeInBase) * -1);
-                    stats.IncrementOrSet(PlayerStatType.TimeOutOfBase, stats.GetValueSafe(PlayerStatType.TimeOutOfBase) * -1);
-                }
+                    var stats = ModStatsUtils.GetStats();
+                    if (stats != null)
+                    {
+                        stats.IncrementOrSet(PlayerStatType.TimeInBase, stats.GetValueSafe(PlayerStatType.TimeInBase) * -1);
+                        stats.IncrementOrSet(PlayerStatType.TimeOutOfBase, stats.GetValueSafe(PlayerStatType.TimeOutOfBase) * -1);
+                    }
 
-                _lastRealtime = Time.realtimeSinceStartupAsDouble;
-                _displayedTime = 0;
-                _lastStatTime = 0;*/
+                    _lastRealtime = Time.realtimeSinceStartupAsDouble;
+                    _displayedTime = 0;
+                    _lastStatTime = 0;
+                }
             }
 
             //Timer update
@@ -235,8 +237,9 @@ namespace SpeedrunManager.UI
                 _lastStatTime = statTime;
             }
 
-            if (!HasPlayerDeadAlreadyInPermadeath())
-                _text.text = FormatTime((float)_displayedTime);
+            _text.text = !HasPlayerDeadAlreadyInPermadeath()
+                ? FormatTime((float)_displayedTime)
+                : ModStatsUtils.GetSpeedrunKnownTextValue("TimerStopped");
             UpdateTimerUI();
         }
 
