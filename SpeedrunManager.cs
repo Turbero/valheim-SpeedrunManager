@@ -9,7 +9,7 @@ namespace SpeedrunManager
     {
         public const string GUID = "Turbero.SpeedrunManager";
         public const string NAME = "Speedrun Manager";
-        public const string VERSION = "0.1.0";
+        public const string VERSION = "0.2.0";
 
         private readonly Harmony harmony = new Harmony(GUID);
 
