@@ -272,10 +272,24 @@ namespace SpeedrunManager.UI
             return _text != null;
         }
 
-        public static void AddNewSplit(Split split)
+        public static void AddSplitTimer(Split split)
         {
-            splits.Add(split);
-            DrawSplits();
+            //Find existing split by name and replace, otherwise just add a new split
+            int index = splits.FindIndex(s => s.BossName.Equals(split.BossName));
+            if (index == -1)
+            {
+                splits.Add(split);
+                DrawSplits();
+            }
+            else if (ConfigurationFile.overrideBossSplitTimerIfKilledAgain.Value)
+            {
+                splits[index].TimerValue = split.TimerValue;
+                DrawSplits();
+            }
+            else
+            {
+                Logger.Log("Nothing to update.");
+            }
         }
 
         public static void StopTimer()

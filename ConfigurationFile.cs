@@ -32,6 +32,7 @@ namespace SpeedrunManager
         public static ConfigEntry<bool> showSplits;
         public static ConfigEntry<Color> colorTimerAfterDyingInPermadeath;
         public static ConfigEntry<bool> countHuginnInitTravelAsPartOfTimer;
+        public static ConfigEntry<bool> overrideBossSplitTimerIfKilledAgain;
 
         internal static void LoadConfig(BaseUnityPlugin plugin)
         {
@@ -39,7 +40,7 @@ namespace SpeedrunManager
                 configFile = plugin.Config;
 
                 debug = configFile.Bind("1 - General", "DebugMode", false, "Enabling/Disabling the debugging in the console (default = false)");
-                hotKey = configFile.Bind("1 - General", "Speedrun Hotkey Panel", KeyCode.Y, "Key to show/hide the speedrun panel configuration");
+                hotKey = configFile.Bind("1 - General", "Hotkey Panel", KeyCode.Y, "Key to show/hide the speedrun panel configuration");
 
                 positionTimer = configFile.Bind("2 - UI Timer", "Position", new Vector2(870, -20), new ConfigDescription("UI Timer position"));
                 colorTimer = configFile.Bind("2 - UI Timer", "Color", new Color(1f, 0.7176f, 0.3603f), new ConfigDescription("UI Timer color"));
@@ -50,6 +51,7 @@ namespace SpeedrunManager
                 speedrunType =  configFile.Bind("3 - Configuration", "Speedrun Type", SpeedrunType.Permadeath, new ConfigDescription("Speedrun type"));
                 showSplits = configFile.Bind("3 - Configuration", "Show Splits", true, new ConfigDescription("Show/hide splits information"));
                 countHuginnInitTravelAsPartOfTimer = configFile.Bind("3 - Configuration", "Count from Huginn Intro", false, new ConfigDescription("If active, the time will start since Huginn is taking you to the spawn, that's ~1min47seg (default = false)"));
+                overrideBossSplitTimerIfKilledAgain = configFile.Bind("3 - Configuration", "Override Boss Split Timer if killed again", false, new ConfigDescription("Replaces the time the boss was killed in his split when it is killed again if this is enabled (default = false)"));
                     
                 SetupWatcher();
             }

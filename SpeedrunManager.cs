@@ -1,4 +1,6 @@
-﻿using BepInEx;
+﻿using System.Collections.Generic;
+using System.Linq;
+using BepInEx;
 using HarmonyLib;
 using UnityEngine;
 
@@ -73,6 +75,15 @@ namespace SpeedrunManager
         {
             //TODO
             
+        }
+    }
+    
+    [HarmonyPatch(typeof(Player), nameof(Player.GetKnownTexts))]
+    public class FixCompendium
+    {
+        public static void Postfix(ref List<KeyValuePair<string, string>> __result)
+        {
+            __result = __result.Where(p => !p.Key.StartsWith(SpeedrunManager.GUID)).ToList();
         }
     }
 }

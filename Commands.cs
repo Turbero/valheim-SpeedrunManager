@@ -22,7 +22,7 @@ namespace SpeedrunManager
                 {
                     RegisterBossDefeatPatch.setupBossSplitTime(args.Args[1], args.Args[2], true);
                     Split split = new Split(bossNameEnum, args.Args[2]);
-                    SpeedrunTimer.AddNewSplit(split);
+                    SpeedrunTimer.AddSplitTimer(split);
                 }
             });
             new Terminal.ConsoleCommand("speedrun_reset", "", args =>

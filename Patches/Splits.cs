@@ -1,19 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using SpeedrunManager.UI;
 
 namespace SpeedrunManager.Patches
 {
-    [HarmonyPatch(typeof(Player), nameof(Player.GetKnownTexts))]
-    public class FixCompendium
-    {
-        public static void Postfix(ref List<KeyValuePair<string, string>> __result)
-        {
-            __result = __result.Where(p => !p.Key.StartsWith(SpeedrunManager.GUID)).ToList();
-        }
-    }
-    
     [HarmonyPatch(typeof(Character), "OnDeath")]
     public class RegisterBossDefeatPatch
     {
@@ -31,7 +21,7 @@ namespace SpeedrunManager.Patches
                 Logger.Log("Gonna parse "+bossName+"...");
                 BossNameEnum bossNameEnum = ModUtils.parseBossName(bossName);
                 Split split = new Split(bossNameEnum, timerValue);
-                SpeedrunTimer.AddNewSplit(split);
+                SpeedrunTimer.AddSplitTimer(split);
             }
 
             if (ConfigurationFile.speedrunType.Value == SpeedrunType.Permadeath && __instance.IsPlayer())
