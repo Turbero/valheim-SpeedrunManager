@@ -2,6 +2,7 @@
 using System.Linq;
 using BepInEx;
 using HarmonyLib;
+using SpeedrunManager.UI;
 using UnityEngine;
 
 namespace SpeedrunManager
@@ -11,10 +12,10 @@ namespace SpeedrunManager
     {
         public const string GUID = "Turbero.SpeedrunManager";
         public const string NAME = "Speedrun Manager";
-        public const string VERSION = "0.2.0";
+        public const string VERSION = "0.3.0";
 
         private readonly Harmony harmony = new Harmony(GUID);
-
+        
         void Awake()
         {
             ConfigurationFile.LoadConfig(this);
@@ -43,38 +44,43 @@ namespace SpeedrunManager
         
         void Update()
         {
-            if (!Player.m_localPlayer || !InventoryGui.instance) return;
+            if (!Player.m_localPlayer || InventoryGui.IsVisible() || !Hud.instance || !SpeedrunConfigPanel.IsCreated()) return;
 
-            // Check if certain keys are hit to close Almanac GUI
-            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab) || Player.m_localPlayer.IsDead())
+            // Check if certain keys are hit to close panel
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                hideSpeedrunPanel();
+                SpeedrunConfigPanel.Hide(false);
+            }
+
+            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return) || 
+                Player.m_localPlayer.IsDead())
+            {
+                SpeedrunConfigPanel.Hide();
             }
 
             // Hotkey to open/close skills dialog (if game is not paused)
             if (Input.GetKeyDown(ConfigurationFile.hotKey.Value) && Time.timeScale > 0)
             {
-                if (Hud.instance.gameObject.activeSelf)
+                if (SpeedrunConfigPanel.IsVisible())
                 {
-                    hideSpeedrunPanel();
+                    SpeedrunConfigPanel.Hide();
                 }
-                else
+                else if (CanShowSpeedrunConfigPanel())
                 {
-                    showSpeedrunPanel();
+                    if (!SpeedrunConfigPanel.IsCreated())
+                        SpeedrunConfigPanel.Create();
+            
+                    SpeedrunConfigPanel.Show();
                 }
             }
         }
 
-        private void hideSpeedrunPanel()
+        private static bool CanShowSpeedrunConfigPanel()
         {
-            //TODO
-            
-        }
-
-        private void showSpeedrunPanel()
-        {
-            //TODO
-            
+            return !InventoryGui.IsVisible() &&
+                   !Console.IsVisible() &&
+                   Player.m_localPlayer.CanMove() &&
+                   !Hud.instance.transform.parent.Find("Chat_box/root/ChatInput").gameObject.activeSelf; // Not typing in the chat
         }
     }
     

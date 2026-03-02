@@ -8,6 +8,9 @@ namespace SpeedrunManager.Patches
     {
         static void Postfix(Hud __instance)
         {
+            if (!SpeedrunConfigPanel.IsCreated())
+                SpeedrunConfigPanel.Create();
+            
             if (!SpeedrunTimer.IsCreated())
                 SpeedrunTimer.Create(__instance);
             
