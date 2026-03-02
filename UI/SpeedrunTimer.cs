@@ -205,7 +205,7 @@ namespace SpeedrunManager.UI
                 Logger.Log("Starting speedrun...");
                 ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStarted", "true");
 
-                if (ConfigurationFile.countHuginnInitTravelAsPartOfTimer.Value)
+                if (!ConfigurationFile.countHuginnInitTravelAsPartOfTimer.Value)
                 {
                     var stats = ModStatsUtils.GetStats();
                     if (stats != null)
