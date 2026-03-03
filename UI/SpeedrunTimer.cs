@@ -187,7 +187,7 @@ namespace SpeedrunManager.UI
             if (Time.timeScale == 0f)
                 return;
 
-            if (Player.m_localPlayer == null || !Player.m_localPlayer.CanMove())
+            if (Player.m_localPlayer == null)
                 return;
             
             if (!splitsLoaded)
@@ -202,11 +202,19 @@ namespace SpeedrunManager.UI
             // Timer start check
             if (!"true".Equals(ModStatsUtils.GetSpeedrunKnownTextValue("TimerStarted"))) //Timer not started yet
             {
-                Logger.Log("Starting speedrun...");
-                ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStarted", "true");
-
-                if (!ConfigurationFile.countHuginnInitTravelAsPartOfTimer.Value)
+                //Will start when Huginn appears carrying the player
+                if (ConfigurationFile.countHuginnInitTravelAsPartOfTimer.Value)
                 {
+                    // Start immediately
+                    Logger.Log("Starting speedrun...");
+                    ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStarted", "true");
+                }
+                //Will start when Huginn drops off the player on the ground
+                else if (Player.m_localPlayer.CanMove()) 
+                {
+                    Logger.Log("Starting speedrun...");
+                    ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStarted", "true");
+
                     var stats = ModStatsUtils.GetStats();
                     if (stats != null)
                     {
@@ -217,7 +225,8 @@ namespace SpeedrunManager.UI
                     _lastRealtime = Time.realtimeSinceStartupAsDouble;
                     _displayedTime = 0;
                     _lastStatTime = 0;
-                }
+                } else
+                    return;
             }
 
             //Timer update
