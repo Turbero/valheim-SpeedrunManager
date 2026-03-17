@@ -183,9 +183,12 @@ namespace SpeedrunManager.UI
         {
             if (_text == null || Game.instance == null)
                 return;
-            
+
             if (Time.timeScale == 0f)
+            {
+                _lastRealtime = Time.realtimeSinceStartupAsDouble;
                 return;
+            }
 
             if (Player.m_localPlayer == null)
                 return;
@@ -237,7 +240,7 @@ namespace SpeedrunManager.UI
             _lastRealtime = now;
 
             // Fluid visual update
-            _displayedTime += deltaRealtime;
+            _displayedTime += Mathf.Min((float)deltaRealtime, 0.25f);
 
             // Resync when stat changes
             if (statTime > _lastStatTime)
