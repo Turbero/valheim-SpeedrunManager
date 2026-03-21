@@ -90,6 +90,7 @@
     <Compile Include="Patches\Splits.cs" />
     <Compile Include="SpeedrunManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\CustomSlider.cs" />
     <Compile Include="UI\SpeedrunConfigPanel.cs" />
     <Compile Include="UI\SpeedrunTimer.cs" />
     <Compile Include="UI\Split.cs" />

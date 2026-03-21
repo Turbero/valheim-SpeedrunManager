@@ -199,7 +199,7 @@ namespace SpeedrunManager.UI
                 splitsLoaded = true;
             }
 
-            if (IsTimerStopped())
+            if (IsTimerStoppedInPermadeath())
                 return;
 
             // Timer start check
@@ -251,8 +251,20 @@ namespace SpeedrunManager.UI
 
             _text.text = !HasPlayerDeadAlreadyInPermadeath()
                 ? FormatTime((float)_displayedTime)
-                : ModStatsUtils.GetSpeedrunKnownTextValue("TimerStopped");
+                : GetTimerStopped();
             UpdateTimerUI();
+        }
+
+        private static string GetTimerStopped()
+        {
+            string timerStopped = ModStatsUtils.GetSpeedrunKnownTextValue("TimerStopped");
+            if (timerStopped == null)
+            {
+                StopTimer();
+                timerStopped = ModStatsUtils.GetSpeedrunKnownTextValue("TimerStopped");
+            }
+
+            return timerStopped;
         }
 
         private static float GetTotalPlaytimeSeconds()
@@ -310,15 +322,23 @@ namespace SpeedrunManager.UI
             UpdateTimerUI();
         }
 
-        private static bool IsTimerStopped()
+        private static bool IsTimerStoppedInPermadeath()
         {
-            return ModStatsUtils.GetSpeedrunKnownTextValue("TimerStopped") != null;
+            return ConfigurationFile.speedrunType.Value == SpeedrunType.Permadeath &&
+                   ModStatsUtils.GetSpeedrunKnownTextValue("TimerStopped") != null;
         }
 
         private static bool HasPlayerDeadAlreadyInPermadeath()
         {
             return ConfigurationFile.speedrunType.Value == SpeedrunType.Permadeath &&
                    ModStatsUtils.GetStats().GetValueOrDefaultPiktiv(PlayerStatType.Deaths, 0) > 0;
+        }
+
+        //For future
+        public static void ResetDeaths()
+        {
+            ModStatsUtils.GetStats()[PlayerStatType.Deaths] = 0;
+            ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStopped", null);
         }
     }
 }

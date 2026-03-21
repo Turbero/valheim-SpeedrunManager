@@ -1,6 +1,6 @@
 {
   "name": "SpeedrunManager",
-  "version_number": "0.3.1",
+  "version_number": "1.0.0",
   "website_url": "https://github.com/Turbero/valheim-SpeedrunManager",
   "description": "Control your speedruns with a configurable in-game timer and track your progress in your speedruns. Dare permadeath? Install this and forget about external software!",
   "dependencies": [

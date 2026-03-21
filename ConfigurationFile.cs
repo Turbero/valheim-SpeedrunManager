@@ -26,7 +26,7 @@ namespace SpeedrunManager
         public static ConfigEntry<Vector2> positionTimer;
         public static ConfigEntry<Color> colorTimer;
         public static ConfigEntry<float> colorWidthTimer;
-        public static ConfigEntry<float> fontSizeTimer;
+        public static ConfigEntry<int> fontSizeTimer;
         
         //Speedrun configuration
         public static ConfigEntry<bool> showSplits;
@@ -45,7 +45,7 @@ namespace SpeedrunManager
                 positionTimer = configFile.Bind("2 - UI Timer", "Position", new Vector2(870, -20), new ConfigDescription("UI Timer position"));
                 colorTimer = configFile.Bind("2 - UI Timer", "Color", new Color(1f, 0.7176f, 0.3603f), new ConfigDescription("UI Timer color"));
                 colorWidthTimer = configFile.Bind("2 - UI Timer", "Color Intensity", 0.15f, new ConfigDescription("UI Timer color intensity (recommended between 0 and 0.5f)"));
-                fontSizeTimer = configFile.Bind("2 - UI Timer", "Size", 64f, new ConfigDescription("UI Timer size"));
+                fontSizeTimer = configFile.Bind("2 - UI Timer", "Size", 64, new ConfigDescription("UI Timer size"));
                 colorTimerAfterDyingInPermadeath = configFile.Bind("2 - UI Timer", "Timer Color After Dying In Permadeath", new Color(1, 0, 0), "Timer color after dying for first time in permadeath mode");
 
                 speedrunType =  configFile.Bind("3 - Configuration", "Speedrun Type", SpeedrunType.Permadeath, new ConfigDescription("Speedrun type"));
