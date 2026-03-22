@@ -27,6 +27,11 @@ namespace SpeedrunManager
         public static ConfigEntry<Color> colorTimer;
         public static ConfigEntry<float> colorWidthTimer;
         public static ConfigEntry<int> fontSizeTimer;
+        //Splits configuration
+        public static ConfigEntry<Vector2> positionSplits;
+        public static ConfigEntry<Color> colorSplits;
+        public static ConfigEntry<float> colorWidthSplits;
+        public static ConfigEntry<int> fontSizeSplits;
         
         //Speedrun configuration
         public static ConfigEntry<bool> showSplits;
@@ -48,6 +53,11 @@ namespace SpeedrunManager
                 fontSizeTimer = configFile.Bind("2 - UI Timer", "Size", 64, new ConfigDescription("UI Timer size"));
                 colorTimerAfterDyingInPermadeath = configFile.Bind("2 - UI Timer", "Timer Color After Dying In Permadeath", new Color(1, 0, 0), "Timer color after dying for first time in permadeath mode");
 
+                positionSplits = configFile.Bind("2.1 - UI Splits", "Splits Position", new Vector2(-300, 455), new ConfigDescription("UI Splits position"));
+                colorSplits = configFile.Bind("2.1 - UI Splits", "Splits Color", Color.white, new ConfigDescription("UI Splits color"));
+                colorWidthSplits = configFile.Bind("2.1 - UI Splits", "Splits Color Intensity", 0.05f, new ConfigDescription("UI Splits color intensity (recommended between 0 and 0.5f)"));
+                fontSizeSplits = configFile.Bind("2.1 - UI Splits", "Splits Size", 20, new ConfigDescription("UI Splits size"));
+                
                 speedrunType =  configFile.Bind("3 - Configuration", "Speedrun Type", SpeedrunType.Permadeath, new ConfigDescription("Speedrun type"));
                 showSplits = configFile.Bind("3 - Configuration", "Show Splits", true, new ConfigDescription("Show/hide splits information"));
                 countHuginnInitTravelAsPartOfTimer = configFile.Bind("3 - Configuration", "Count from Huginn Intro", false, new ConfigDescription("If active, the time will start since Huginn is taking you to the spawn, that's ~1min47seg (default = false)"));

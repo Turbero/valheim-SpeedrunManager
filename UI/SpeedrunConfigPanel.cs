@@ -25,7 +25,7 @@ namespace SpeedrunManager.UI
             //panel.transform.SetAsFirstSibling();
 
             RectTransform panelRect = panel.GetComponent<RectTransform>();
-            panelRect.sizeDelta = new Vector2(600, 600);
+            panelRect.sizeDelta = new Vector2(675, 675);
             panelRect.anchoredPosition = new Vector2(0, 0); // (0,0) = centered on screen
 
             // Background
@@ -81,7 +81,7 @@ namespace SpeedrunManager.UI
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
-                description: "X-ayis",
+                description: "Timer X-ayis",
                 posXValue: 185,
                 initValue: (int)ConfigurationFile.positionTimer.Value.x,
                 valueDesc: ConfigurationFile.positionTimer.Value.x.ToGlobalInvariantString()
@@ -103,7 +103,7 @@ namespace SpeedrunManager.UI
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
-                description: "Y-ayis",
+                description: "Timer Y-ayis",
                 posXValue: 185,
                 initValue: (int)ConfigurationFile.positionTimer.Value.y * -1,
                 valueDesc: (ConfigurationFile.positionTimer.Value.y * -1).ToGlobalInvariantString()
@@ -128,7 +128,7 @@ namespace SpeedrunManager.UI
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
-                description: "Size",
+                description: "Timer Size",
                 posXValue: 185,
                 initValue: ConfigurationFile.fontSizeTimer.Value,
                 valueDesc: ConfigurationFile.fontSizeTimer.Value.ToString()

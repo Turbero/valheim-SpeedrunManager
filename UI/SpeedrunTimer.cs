@@ -125,8 +125,8 @@ namespace SpeedrunManager.UI
             goSplitsTimers.transform.SetParent(Hud.instance.transform, false);
             goSplitsTimers.SetActive(ConfigurationFile.showSplits.Value);
 
-            int width = -300;
-            int height = 455;
+            int width = (int)ConfigurationFile.positionSplits.Value.x;
+            int height = (int)ConfigurationFile.positionSplits.Value.y;
             int count = 0;
             foreach (var split in splits)
             {
@@ -157,18 +157,22 @@ namespace SpeedrunManager.UI
                 rectTimeObj.sizeDelta = new Vector2(64, 32);
                 TextMeshProUGUI textTimeObj = splitTimeObj.GetComponent<TextMeshProUGUI>();
                 textTimeObj.transform.SetParent(goSplitsTimers.transform);
-                textTimeObj.fontSize = 20;
+                textTimeObj.fontSize = ConfigurationFile.fontSizeSplits.Value;
                 textTimeObj.alignment = TextAlignmentOptions.Left;
                 textTimeObj.font = ModUtils.getFontAsset("Valheim-Norse");
-                textTimeObj.color = Color.white;
-                textTimeObj.outlineColor = new Color32(255, 255, 255, 255);
-                textTimeObj.outlineWidth = 0.05f;
+                textTimeObj.color = ConfigurationFile.colorSplits.Value;
+                textTimeObj.outlineColor = new Color32(
+                    (byte)(textTimeObj.color.r * 255f),
+                    (byte)(textTimeObj.color.g * 255f),
+                    (byte)(textTimeObj.color.b * 255f),
+                    255);
+                textTimeObj.outlineWidth = ConfigurationFile.colorWidthSplits.Value;
                 textTimeObj.text = split.TimerValue;
 
                 count++;
                 if (count == 4)
                 {
-                    width = -198;
+                    width = (int)ConfigurationFile.positionSplits.Value.x + 102; //Default -198: -300 + 102
                     height = 455;
                     count = 0;
                 }

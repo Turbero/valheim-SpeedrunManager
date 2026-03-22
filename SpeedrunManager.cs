@@ -12,7 +12,7 @@ namespace SpeedrunManager
     {
         public const string GUID = "Turbero.SpeedrunManager";
         public const string NAME = "Speedrun Manager";
-        public const string VERSION = "0.4.0";
+        public const string VERSION = "0.4.1";
 
         private readonly Harmony harmony = new Harmony(GUID);
         
@@ -59,7 +59,7 @@ namespace SpeedrunManager
             }
 
             // Hotkey to open/close skills dialog (if game is not paused)
-            if (Input.GetKeyDown(ConfigurationFile.hotKey.Value) && Time.timeScale > 0)
+            if (Input.GetKeyDown(ConfigurationFile.hotKey.Value))
             {
                 if (SpeedrunConfigPanel.IsVisible())
                 {
@@ -80,7 +80,8 @@ namespace SpeedrunManager
             return !InventoryGui.IsVisible() &&
                    !Console.IsVisible() &&
                    Player.m_localPlayer.CanMove() &&
-                   !Hud.instance.transform.parent.Find("Chat_box/root/ChatInput").gameObject.activeSelf; // Not typing in the chat
+                   !Hud.instance.transform.parent.Find("Chat_box/root/ChatInput").gameObject.activeSelf && // Not typing in the chat
+                   !Game.instance.transform.Find("LoadingGUI/PixelFix/IngameGui/TextInput/panel").gameObject.activeSelf; //Not typing when changing an input field
         }
     }
     
