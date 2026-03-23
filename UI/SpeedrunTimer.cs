@@ -48,7 +48,9 @@ namespace SpeedrunManager.UI
 
         public static void UpdateTimerUI()
         {
-            rect.anchoredPosition = ConfigurationFile.positionTimer.Value;
+            rect.anchoredPosition = new Vector2(
+                ConfigurationFile.positionTimer.Value.x, 
+                ConfigurationFile.positionTimer.Value.y * -1);
             _text.fontSize = ConfigurationFile.fontSizeTimer.Value;
             _text.color = ConfigurationFile.colorTimer.Value;
             
@@ -118,15 +120,19 @@ namespace SpeedrunManager.UI
             DrawSplits();
         }
         
-        private static void DrawSplits()
+        public static void DrawSplits()
         {
             Logger.Log("Drawing splits...");
             goSplitsTimers = GameObject.Find("SpeedrunTimerSplits") ?? new GameObject("SpeedrunTimerSplits", typeof(RectTransform));
             goSplitsTimers.transform.SetParent(Hud.instance.transform, false);
             goSplitsTimers.SetActive(ConfigurationFile.showSplits.Value);
+            goSplitsTimers.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 950);
 
-            int width = (int)ConfigurationFile.positionSplits.Value.x;
-            int height = (int)ConfigurationFile.positionSplits.Value.y;
+            int splitsTopLeftPosX = (int)ConfigurationFile.positionSplits.Value.x - 900;
+            int splitsTopLeftPosY = (int)ConfigurationFile.positionSplits.Value.y*-1 - 480;
+
+            int splitPosX = splitsTopLeftPosX;
+            int splitPosY = splitsTopLeftPosY;
             int count = 0;
             foreach (var split in splits)
             {
@@ -140,7 +146,7 @@ namespace SpeedrunManager.UI
                 rectIconObj.anchorMin = new Vector2(0, 1);
                 rectIconObj.anchorMax = new Vector2(0, 1);
                 rectIconObj.pivot = new Vector2(0, 1);
-                rectIconObj.anchoredPosition = new Vector2(width, height);
+                rectIconObj.anchoredPosition = new Vector2(splitPosX, splitPosY);
                 rectIconObj.sizeDelta = new Vector2(32, 32);
                 Image img = splitIconObj.GetComponent<Image>();
                 img.sprite = ModUtils.getSprite(split.BossName.GetTrophySpriteKey());
@@ -153,7 +159,7 @@ namespace SpeedrunManager.UI
                 rectTimeObj.anchorMin = new Vector2(0, 1);
                 rectTimeObj.anchorMax = new Vector2(0, 1);
                 rectTimeObj.pivot = new Vector2(0, 1);
-                rectTimeObj.anchoredPosition = new Vector2(width + 40, height);
+                rectTimeObj.anchoredPosition = new Vector2(splitPosX + 40, splitPosY);
                 rectTimeObj.sizeDelta = new Vector2(64, 32);
                 TextMeshProUGUI textTimeObj = splitTimeObj.GetComponent<TextMeshProUGUI>();
                 textTimeObj.transform.SetParent(goSplitsTimers.transform);
@@ -170,15 +176,15 @@ namespace SpeedrunManager.UI
                 textTimeObj.text = split.TimerValue;
 
                 count++;
-                if (count == 4)
+                if (count == ConfigurationFile.splitsColumnSize.Value)
                 {
-                    width = (int)ConfigurationFile.positionSplits.Value.x + 102; //Default -198: -300 + 102
-                    height = 455;
+                    splitPosX = splitsTopLeftPosX + ConfigurationFile.splitsColumnsSpace.Value;
+                    splitPosY = splitsTopLeftPosY;
                     count = 0;
                 }
                 else
                 {
-                    height -= 40;
+                    splitPosY -= ConfigurationFile.splitsRowsSpace.Value;
                 }
             }
         }

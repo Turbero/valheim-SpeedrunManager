@@ -10,6 +10,13 @@ namespace SpeedrunManager.UI
         private static CustomSlider customSliderTimerPositionX;
         private static CustomSlider customSliderTimerPositionY;
         private static CustomSlider customSliderFontTimer;
+        private static CustomSlider customSliderSplitsPositionX;
+        private static CustomSlider customSliderSplitsPositionY;
+        private static CustomSlider customSliderFontSplits;
+        private static CustomSlider customSliderSplitsColumnSize;
+        private static CustomSlider customSliderSplitsColumnsSpace;
+        private static CustomSlider customSliderSplitsRowsSpace;
+        
         private static CustomSlider customSliderRunType;
         private static CustomSlider customSliderShowSplits;
 
@@ -25,17 +32,17 @@ namespace SpeedrunManager.UI
             //panel.transform.SetAsFirstSibling();
 
             RectTransform panelRect = panel.GetComponent<RectTransform>();
-            panelRect.sizeDelta = new Vector2(675, 675);
+            panelRect.sizeDelta = new Vector2(750, 550);
             panelRect.anchoredPosition = new Vector2(0, 0); // (0,0) = centered on screen
 
             // Background
             Image original = skillsFrameTransform.Find("bkg").GetComponent<Image>();
-            Image background = GameObject.Instantiate(original, panel.transform);
+            Image background = Object.Instantiate(original, panel.transform);
             background.name = "bkg";
 
             // Title
             GameObject originalTitle = skillsFrameTransform.Find("topic").gameObject;
-            GameObject title = GameObject.Instantiate(originalTitle, panel.transform);
+            GameObject title = Object.Instantiate(originalTitle, panel.transform);
             title.name = "Title";
             title.GetComponent<RectTransform>().sizeDelta = new Vector2(400, 50);
             TextMeshProUGUI titleText = title.GetComponent<TextMeshProUGUI>();
@@ -47,7 +54,7 @@ namespace SpeedrunManager.UI
             // Close button
             Transform closeButtonTransform =
                 InventoryGui.instance.m_skillsDialog.transform.Find("SkillsFrame/Closebutton");
-            GameObject closebuttonGo = GameObject.Instantiate(closeButtonTransform.gameObject, panel.transform);
+            GameObject closebuttonGo = Object.Instantiate(closeButtonTransform.gameObject, panel.transform);
             closebuttonGo.name = "CloseButton";
             closebuttonGo.transform.SetParent(panel.transform, false);
 
@@ -61,23 +68,43 @@ namespace SpeedrunManager.UI
             closeButton.onClick = new Button.ButtonClickedEvent();
             closeButton.onClick.AddListener(() => { Hide(); });
             
-            addTimerPositionSliders(panel.transform);
-            addFontTimerSlider(panel.transform);
-            
-            addColorTimerSlider(panel.transform);
-            addRunType(panel.transform);
-            addShowSplits(panel.transform);
+            addTimerSliders();
+            addSplitsSliders();
+
+            //addResetPositionButton();
+            //addResetTimerButton();
         }
 
-        private static void addTimerPositionSliders(Transform parent)
+        private static void addTimerSliders()
         {
+            customSliderRunType = new CustomSlider(
+                name: "RunTypeSlider",
+                minValue: 0,
+                maxValue: 1,
+                sizeDelta: new Vector2(25, 10),
+                position: new Vector2(-212, 200),
+                posXIcon: -1,
+                spriteName: null,
+                posXDescription: -124,
+                description: "Run Type",
+                posXValue: 123,
+                initValue: ConfigurationFile.speedrunType.Value == SpeedrunType.Permadeath ? 1 : 0,
+                valueDesc: ConfigurationFile.speedrunType.Value.ToString()
+            );
+            customSliderRunType.getGameObject().transform.SetParent(panel.transform, false);
+            customSliderRunType.OnValueChanged(value =>
+            {
+                Logger.Log("slider changed to " + value);
+                customSliderRunType.updateTextValue(value.Equals(1f) ? nameof(SpeedrunType.Permadeath) : nameof(SpeedrunType.InfiniteLives));
+                ConfigurationFile.speedrunType.Value = value.Equals(1f) ? SpeedrunType.Permadeath : SpeedrunType.InfiniteLives;
+            });
             //X
             customSliderTimerPositionX = new CustomSlider(
                 name: "TimerPositionXSlider",
                 minValue: 0,
                 maxValue: 2000,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(-150, 150),
+                position: new Vector2(-150, 170),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
@@ -86,7 +113,7 @@ namespace SpeedrunManager.UI
                 initValue: (int)ConfigurationFile.positionTimer.Value.x,
                 valueDesc: ConfigurationFile.positionTimer.Value.x.ToGlobalInvariantString()
             );
-            customSliderTimerPositionX.getGameObject().transform.SetParent(parent, false);
+            customSliderTimerPositionX.getGameObject().transform.SetParent(panel.transform, false);
             customSliderTimerPositionX.OnValueChanged(value =>
             {
                 Logger.Log("slider changed to " + value);
@@ -99,32 +126,28 @@ namespace SpeedrunManager.UI
                 minValue: 0,
                 maxValue: 1100,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(-150, 100),
+                position: new Vector2(-150, 140),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
                 description: "Timer Y-ayis",
                 posXValue: 185,
-                initValue: (int)ConfigurationFile.positionTimer.Value.y * -1,
-                valueDesc: (ConfigurationFile.positionTimer.Value.y * -1).ToGlobalInvariantString()
+                initValue: (int)ConfigurationFile.positionTimer.Value.y,
+                valueDesc: ConfigurationFile.positionTimer.Value.y.ToGlobalInvariantString()
             );
-            customSliderTimerPositionY.getGameObject().transform.SetParent(parent, false);
+            customSliderTimerPositionY.getGameObject().transform.SetParent(panel.transform, false);
             customSliderTimerPositionY.OnValueChanged(value =>
             {
                 Logger.Log("slider changed to " + value);
                 customSliderTimerPositionY.updateTextValue(value.ToGlobalInvariantString());
-                ConfigurationFile.positionTimer.Value = new Vector2(ConfigurationFile.positionTimer.Value.x, value * -1);
+                ConfigurationFile.positionTimer.Value = new Vector2(ConfigurationFile.positionTimer.Value.x, value);
             });
-        }
-
-        private static void addFontTimerSlider(Transform panelTransform)
-        {
             customSliderFontTimer = new CustomSlider(
                 name: "FontTimerSlider",
                 minValue: 1,
                 maxValue: 256,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(-150, 50),
+                position: new Vector2(-150, 110),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
@@ -133,53 +156,26 @@ namespace SpeedrunManager.UI
                 initValue: ConfigurationFile.fontSizeTimer.Value,
                 valueDesc: ConfigurationFile.fontSizeTimer.Value.ToString()
             );
-            customSliderFontTimer.getGameObject().transform.SetParent(panelTransform, false);
+            customSliderFontTimer.getGameObject().transform.SetParent(panel.transform, false);
             customSliderFontTimer.OnValueChanged(value =>
             {
                 Logger.Log("slider changed to " + value);
                 customSliderFontTimer.updateTextValue(value.ToGlobalInvariantString());
                 ConfigurationFile.fontSizeTimer.Value = (int)value;
             });
+            
+            //TODO ColorTimerSlider
+            
         }
 
-        private static void addColorTimerSlider(Transform panelTransform)
-        {
-            //TODO
-        }
-
-        private static void addRunType(Transform panelTransform)
-        {
-            customSliderRunType = new CustomSlider(
-                name: "RunTypeSlider",
-                minValue: 0,
-                maxValue: 1,
-                sizeDelta: new Vector2(25, 10),
-                position: new Vector2(120, 150),
-                posXIcon: -1,
-                spriteName: null,
-                posXDescription: -124,
-                description: "Run Type",
-                posXValue: 123,
-                initValue: ConfigurationFile.speedrunType.Value == SpeedrunType.Permadeath ? 1 : 0,
-                valueDesc: ConfigurationFile.speedrunType.Value.ToString()
-            );
-            customSliderRunType.getGameObject().transform.SetParent(panelTransform, false);
-            customSliderRunType.OnValueChanged(value =>
-            {
-                Logger.Log("slider changed to " + value);
-                customSliderRunType.updateTextValue(value.Equals(1f) ? nameof(SpeedrunType.Permadeath) : nameof(SpeedrunType.InfiniteLives));
-                ConfigurationFile.speedrunType.Value = value.Equals(1f) ? SpeedrunType.Permadeath : SpeedrunType.InfiniteLives;
-            });
-        }
-
-        private static void addShowSplits(Transform panelTransform)
+        private static void addSplitsSliders()
         {
             customSliderShowSplits = new CustomSlider(
                 name: "ShowSplitsSlider",
                 minValue: 0,
                 maxValue: 1,
                 sizeDelta: new Vector2(25, 10),
-                position: new Vector2(120, 100),
+                position: new Vector2(158, 200),
                 posXIcon: -1,
                 spriteName: null,
                 posXDescription: -124,
@@ -188,11 +184,141 @@ namespace SpeedrunManager.UI
                 initValue: ConfigurationFile.showSplits.Value ? 1 : 0,
                 valueDesc: ConfigurationFile.showSplits.Value.ToString()
             );
-            customSliderShowSplits.getGameObject().transform.SetParent(panelTransform, false);
+            customSliderShowSplits.getGameObject().transform.SetParent(panel.transform, false);
             customSliderShowSplits.OnValueChanged(value =>
             {
                 customSliderShowSplits.updateTextValue(value.Equals(1f).ToString());
                 ConfigurationFile.showSplits.Value = value.Equals(1f);
+            });
+            //X
+            customSliderSplitsPositionX = new CustomSlider(
+                name: "SplitsPositionXSlider",
+                minValue: 0,
+                maxValue: 1800,
+                sizeDelta: new Vector2(150, 10),
+                position: new Vector2(220, 170),
+                posXIcon: 0,
+                spriteName: null,
+                posXDescription: -186,
+                description: "Splits X-ayis",
+                posXValue: 185,
+                initValue: (int)ConfigurationFile.positionSplits.Value.x,
+                valueDesc: ConfigurationFile.positionSplits.Value.x.ToGlobalInvariantString()
+            );
+            customSliderSplitsPositionX.getGameObject().transform.SetParent(panel.transform, false);
+            customSliderSplitsPositionX.OnValueChanged(value =>
+            {
+                Logger.Log("slider changed to " + value);
+                customSliderSplitsPositionX.updateTextValue(value.ToGlobalInvariantString());
+                ConfigurationFile.positionSplits.Value = new Vector2(value, ConfigurationFile.positionSplits.Value.y);
+            });
+            //Y
+            customSliderSplitsPositionY = new CustomSlider(
+                name: "SplitsPositionYSlider",
+                minValue: 0,
+                maxValue: 960,
+                sizeDelta: new Vector2(150, 10),
+                position: new Vector2(220, 140),
+                posXIcon: 0,
+                spriteName: null,
+                posXDescription: -186,
+                description: "Splits Y-ayis",
+                posXValue: 185,
+                initValue: (int)ConfigurationFile.positionSplits.Value.y,
+                valueDesc: ConfigurationFile.positionSplits.Value.y.ToGlobalInvariantString()
+            );
+            customSliderSplitsPositionY.getGameObject().transform.SetParent(panel.transform, false);
+            customSliderSplitsPositionY.OnValueChanged(value =>
+            {
+                Logger.Log("slider changed to " + value);
+                customSliderSplitsPositionY.updateTextValue(value.ToGlobalInvariantString());
+                ConfigurationFile.positionSplits.Value = new Vector2(ConfigurationFile.positionSplits.Value.x, value);
+            });
+            
+            customSliderFontSplits = new CustomSlider(
+                name: "FontSplitsSlider",
+                minValue: 1,
+                maxValue: 256,
+                sizeDelta: new Vector2(150, 10),
+                position: new Vector2(220, 110),
+                posXIcon: 0,
+                spriteName: null,
+                posXDescription: -186,
+                description: "Splits Size",
+                posXValue: 185,
+                initValue: ConfigurationFile.fontSizeSplits.Value,
+                valueDesc: ConfigurationFile.fontSizeSplits.Value.ToString()
+            );
+            customSliderFontSplits.getGameObject().transform.SetParent(panel.transform, false);
+            customSliderFontSplits.OnValueChanged(value =>
+            {
+                Logger.Log("slider changed to " + value);
+                customSliderFontSplits.updateTextValue(value.ToGlobalInvariantString());
+                ConfigurationFile.fontSizeSplits.Value = (int)value;
+            });
+            customSliderSplitsColumnSize = new CustomSlider(
+                name: "SplitsColumnSize",
+                minValue: 4,
+                maxValue: 8,
+                sizeDelta: new Vector2(150, 10),
+                position: new Vector2(220, 80),
+                posXIcon: 0,
+                spriteName: null,
+                posXDescription: -186,
+                description: "Splits Column Size",
+                posXValue: 185,
+                initValue: ConfigurationFile.splitsColumnSize.Value,
+                valueDesc: ConfigurationFile.splitsColumnSize.Value.ToString()
+            );
+            customSliderSplitsColumnSize.getGameObject().transform.SetParent(panel.transform, false);
+            customSliderSplitsColumnSize.OnValueChanged(value =>
+            {
+                Logger.Log("slider changed to " + value);
+                customSliderSplitsColumnSize.updateTextValue(value.ToGlobalInvariantString());
+                ConfigurationFile.splitsColumnSize.Value = Mathf.Min(20, (int)value);
+            });
+            
+            customSliderSplitsColumnsSpace = new CustomSlider(
+                name: "SplitsColumnsSpace",
+                minValue: 104,
+                maxValue: 256,
+                sizeDelta: new Vector2(150, 10),
+                position: new Vector2(220, 50),
+                posXIcon: 0,
+                spriteName: null,
+                posXDescription: -186,
+                description: "Splits Columns Space",
+                posXValue: 185,
+                initValue: ConfigurationFile.splitsColumnsSpace.Value,
+                valueDesc: ConfigurationFile.splitsColumnsSpace.Value.ToString()
+            );
+            customSliderSplitsColumnsSpace.getGameObject().transform.SetParent(panel.transform, false);
+            customSliderSplitsColumnsSpace.OnValueChanged(value =>
+            {
+                Logger.Log("slider changed to " + value);
+                customSliderSplitsColumnsSpace.updateTextValue(value.ToGlobalInvariantString());
+                ConfigurationFile.splitsColumnsSpace.Value = Mathf.Min(100, (int)value);
+            });
+            customSliderSplitsRowsSpace = new CustomSlider(
+                name: "SplitsRowsSpace",
+                minValue: 40,
+                maxValue: 256,
+                sizeDelta: new Vector2(150, 10),
+                position: new Vector2(220, 20),
+                posXIcon: 0,
+                spriteName: null,
+                posXDescription: -186,
+                description: "Splits Rows Space",
+                posXValue: 185,
+                initValue: ConfigurationFile.splitsRowsSpace.Value,
+                valueDesc: ConfigurationFile.splitsRowsSpace.Value.ToString()
+            );
+            customSliderSplitsRowsSpace.getGameObject().transform.SetParent(panel.transform, false);
+            customSliderSplitsRowsSpace.OnValueChanged(value =>
+            {
+                Logger.Log("slider changed to " + value);
+                customSliderSplitsRowsSpace.updateTextValue(value.ToGlobalInvariantString());
+                ConfigurationFile.splitsRowsSpace.Value = (int)value;
             });
         }
 
