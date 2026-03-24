@@ -77,11 +77,14 @@ namespace SpeedrunManager
 
         private static bool CanShowSpeedrunConfigPanel()
         {
-            return !InventoryGui.IsVisible() &&
+            return Player.m_localPlayer != null && Player.m_localPlayer.CanMove() &&
+                   !Game.IsPaused() &&
+                   !InventoryGui.IsVisible() &&
                    !Console.IsVisible() &&
-                   Player.m_localPlayer.CanMove() &&
-                   !Hud.instance.transform.parent.Find("Chat_box/root/ChatInput").gameObject.activeSelf && // Not typing in the chat
-                   !Game.instance.transform.Find("LoadingGUI/PixelFix/IngameGui/TextInput/panel").gameObject.activeSelf; //Not typing when changing an input field
+                   !Hud.instance.transform.parent.Find("Chat_box/root/ChatInput").gameObject.activeSelf && // Not when typing in the chat
+                   !Game.instance.transform.Find("LoadingGUI/PixelFix/IngameGui/TextInput/panel").gameObject.activeSelf && //Not when changing an input field
+                   !Minimap.instance.transform.Find("large").gameObject.activeSelf && //Not while large map is opened
+                   !StoreGui.instance.m_rootPanel.activeSelf; //Not when any store is opened
         }
     }
     
