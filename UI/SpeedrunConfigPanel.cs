@@ -32,7 +32,7 @@ namespace SpeedrunManager.UI
             //panel.transform.SetAsFirstSibling();
 
             RectTransform panelRect = panel.GetComponent<RectTransform>();
-            panelRect.sizeDelta = new Vector2(750, 550);
+            panelRect.sizeDelta = new Vector2(820, 550);
             panelRect.anchoredPosition = new Vector2(0, 0); // (0,0) = centered on screen
 
             // Background
@@ -82,7 +82,7 @@ namespace SpeedrunManager.UI
                 minValue: 0,
                 maxValue: 1,
                 sizeDelta: new Vector2(25, 10),
-                position: new Vector2(-212, 200),
+                position: new Vector2(-272, 200),
                 posXIcon: -1,
                 spriteName: null,
                 posXDescription: -124,
@@ -104,14 +104,15 @@ namespace SpeedrunManager.UI
                 minValue: 0,
                 maxValue: 2000,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(-150, 170),
+                position: new Vector2(-210, 170),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
                 description: "Timer X-ayis",
                 posXValue: 185,
                 initValue: (int)ConfigurationFile.positionTimer.Value.x,
-                valueDesc: ConfigurationFile.positionTimer.Value.x.ToGlobalInvariantString()
+                valueDesc: ConfigurationFile.positionTimer.Value.x.ToGlobalInvariantString(),
+                hasResetButton: true
             );
             customSliderTimerPositionX.getGameObject().transform.SetParent(panel.transform, false);
             customSliderTimerPositionX.OnValueChanged(value =>
@@ -126,14 +127,15 @@ namespace SpeedrunManager.UI
                 minValue: 0,
                 maxValue: 1100,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(-150, 140),
+                position: new Vector2(-210, 140),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
                 description: "Timer Y-ayis",
                 posXValue: 185,
                 initValue: (int)ConfigurationFile.positionTimer.Value.y,
-                valueDesc: ConfigurationFile.positionTimer.Value.y.ToGlobalInvariantString()
+                valueDesc: ConfigurationFile.positionTimer.Value.y.ToGlobalInvariantString(),
+                hasResetButton: true
             );
             customSliderTimerPositionY.getGameObject().transform.SetParent(panel.transform, false);
             customSliderTimerPositionY.OnValueChanged(value =>
@@ -147,14 +149,15 @@ namespace SpeedrunManager.UI
                 minValue: 1,
                 maxValue: 256,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(-150, 110),
+                position: new Vector2(-210, 110),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
                 description: "Timer Size",
                 posXValue: 185,
                 initValue: ConfigurationFile.fontSizeTimer.Value,
-                valueDesc: ConfigurationFile.fontSizeTimer.Value.ToString()
+                valueDesc: ConfigurationFile.fontSizeTimer.Value.ToString(),
+                hasResetButton: true
             );
             customSliderFontTimer.getGameObject().transform.SetParent(panel.transform, false);
             customSliderFontTimer.OnValueChanged(value =>
@@ -175,7 +178,7 @@ namespace SpeedrunManager.UI
                 minValue: 0,
                 maxValue: 1,
                 sizeDelta: new Vector2(25, 10),
-                position: new Vector2(158, 200),
+                position: new Vector2(178, 200),
                 posXIcon: -1,
                 spriteName: null,
                 posXDescription: -124,
@@ -196,14 +199,15 @@ namespace SpeedrunManager.UI
                 minValue: 0,
                 maxValue: 1800,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(220, 170),
+                position: new Vector2(240, 170),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
                 description: "Splits X-ayis",
                 posXValue: 185,
                 initValue: (int)ConfigurationFile.positionSplits.Value.x,
-                valueDesc: ConfigurationFile.positionSplits.Value.x.ToGlobalInvariantString()
+                valueDesc: ConfigurationFile.positionSplits.Value.x.ToGlobalInvariantString(),
+                hasResetButton: true
             );
             customSliderSplitsPositionX.getGameObject().transform.SetParent(panel.transform, false);
             customSliderSplitsPositionX.OnValueChanged(value =>
@@ -218,14 +222,15 @@ namespace SpeedrunManager.UI
                 minValue: 0,
                 maxValue: 960,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(220, 140),
+                position: new Vector2(240, 140),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
                 description: "Splits Y-ayis",
                 posXValue: 185,
                 initValue: (int)ConfigurationFile.positionSplits.Value.y,
-                valueDesc: ConfigurationFile.positionSplits.Value.y.ToGlobalInvariantString()
+                valueDesc: ConfigurationFile.positionSplits.Value.y.ToGlobalInvariantString(),
+                hasResetButton: true
             );
             customSliderSplitsPositionY.getGameObject().transform.SetParent(panel.transform, false);
             customSliderSplitsPositionY.OnValueChanged(value =>
@@ -240,14 +245,15 @@ namespace SpeedrunManager.UI
                 minValue: 1,
                 maxValue: 256,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(220, 110),
+                position: new Vector2(240, 110),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
                 description: "Splits Size",
                 posXValue: 185,
                 initValue: ConfigurationFile.fontSizeSplits.Value,
-                valueDesc: ConfigurationFile.fontSizeSplits.Value.ToString()
+                valueDesc: ConfigurationFile.fontSizeSplits.Value.ToString(),
+                hasResetButton: true
             );
             customSliderFontSplits.getGameObject().transform.SetParent(panel.transform, false);
             customSliderFontSplits.OnValueChanged(value =>
@@ -261,14 +267,15 @@ namespace SpeedrunManager.UI
                 minValue: 4,
                 maxValue: 8,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(220, 80),
+                position: new Vector2(240, 80),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
                 description: "Splits Column Size",
                 posXValue: 185,
                 initValue: ConfigurationFile.splitsColumnSize.Value,
-                valueDesc: ConfigurationFile.splitsColumnSize.Value.ToString()
+                valueDesc: ConfigurationFile.splitsColumnSize.Value.ToString(),
+                hasResetButton: true
             );
             customSliderSplitsColumnSize.getGameObject().transform.SetParent(panel.transform, false);
             customSliderSplitsColumnSize.OnValueChanged(value =>
@@ -280,38 +287,40 @@ namespace SpeedrunManager.UI
             
             customSliderSplitsColumnsSpace = new CustomSlider(
                 name: "SplitsColumnsSpace",
-                minValue: 104,
+                minValue: 0,
                 maxValue: 256,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(220, 50),
+                position: new Vector2(240, 50),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
                 description: "Splits Columns Space",
                 posXValue: 185,
                 initValue: ConfigurationFile.splitsColumnsSpace.Value,
-                valueDesc: ConfigurationFile.splitsColumnsSpace.Value.ToString()
+                valueDesc: ConfigurationFile.splitsColumnsSpace.Value.ToString(),
+                hasResetButton: true
             );
             customSliderSplitsColumnsSpace.getGameObject().transform.SetParent(panel.transform, false);
             customSliderSplitsColumnsSpace.OnValueChanged(value =>
             {
                 Logger.Log("slider changed to " + value);
                 customSliderSplitsColumnsSpace.updateTextValue(value.ToGlobalInvariantString());
-                ConfigurationFile.splitsColumnsSpace.Value = Mathf.Min(100, (int)value);
+                ConfigurationFile.splitsColumnsSpace.Value = (int) (value + 104);
             });
             customSliderSplitsRowsSpace = new CustomSlider(
                 name: "SplitsRowsSpace",
                 minValue: 40,
                 maxValue: 256,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(220, 20),
+                position: new Vector2(240, 20),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
                 description: "Splits Rows Space",
                 posXValue: 185,
                 initValue: ConfigurationFile.splitsRowsSpace.Value,
-                valueDesc: ConfigurationFile.splitsRowsSpace.Value.ToString()
+                valueDesc: ConfigurationFile.splitsRowsSpace.Value.ToString(),
+                hasResetButton: true
             );
             customSliderSplitsRowsSpace.getGameObject().transform.SetParent(panel.transform, false);
             customSliderSplitsRowsSpace.OnValueChanged(value =>

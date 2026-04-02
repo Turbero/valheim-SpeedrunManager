@@ -8,16 +8,18 @@ namespace SpeedrunManager.UI
 {
     public class CustomSlider
     {
+        private int initValue;
         private readonly GameObject sliderObject;
         private readonly Slider slider;
         private readonly TextMeshProUGUI sliderValue;
         public TextMeshProUGUI sliderLabelDescription;
+        private Button resetButton;
 
         public CustomSlider(string name, int minValue, int maxValue,
                             Vector2 sizeDelta, Vector2 position,
                             int posXIcon, string spriteName,
                             int posXDescription, string description,
-                            int posXValue, int initValue, string valueDesc
+                            int posXValue, int initValue, string valueDesc, bool hasResetButton = false
                             )
         {
             // Main container
@@ -34,6 +36,7 @@ namespace SpeedrunManager.UI
             slider.minValue = minValue;
             slider.maxValue = maxValue;
             slider.value = initValue;
+            this.initValue = initValue;
             //m_WholeNumbers = 1 makes automatically stepSize=1
             typeof(Slider).GetField("m_WholeNumbers", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(slider, true);
 
@@ -112,6 +115,26 @@ namespace SpeedrunManager.UI
                 sliderValue.alignment = TextAlignmentOptions.Left;
                 sliderValue.text = valueDesc;
             }
+            
+            //Reset button
+            if (hasResetButton) {
+                resetButton = Object.Instantiate(InventoryGui.instance.m_takeAllButton, sliderObject.transform);
+                resetButton.name = "ResetButton";
+                resetButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(140, 0);
+                resetButton.GetComponent<RectTransform>().sizeDelta = new Vector2(30, 30);
+                resetButton.GetComponentInChildren<TextMeshProUGUI>().text = "R";
+                resetButton.onClick = new Button.ButtonClickedEvent();
+                resetButton.onClick.AddListener(() =>
+                {
+                    updateValue(this.initValue);
+                    updateTextValue(this.initValue.ToString());
+                });
+                UITooltip resetTooltip = resetButton.gameObject.AddComponent<UITooltip>();
+                resetTooltip.m_tooltipPrefab = GameObject.Instantiate(
+                    InventoryGui.instance.transform.Find("root/Info/Skills").GetComponent<UITooltip>().m_tooltipPrefab);
+                resetTooltip.m_text = "Reset";
+            }
+
         }
 
         public GameObject getGameObject()

@@ -61,7 +61,7 @@ namespace SpeedrunManager
                 colorWidthSplits = configFile.Bind("2.1 - UI Splits", "Splits Color Intensity", 0.05f, new ConfigDescription("UI Splits color intensity (recommended between 0 and 0.5f)"));
                 fontSizeSplits = configFile.Bind("2.1 - UI Splits", "Splits Font Size", 20, new ConfigDescription("UI Splits size"));
                 splitsColumnSize = configFile.Bind("2.1 - UI Splits", "Splits Column Size", 4, new ConfigDescription("UI Splits size", new AcceptableValueRange<int>(4, 8)));
-                splitsColumnsSpace = configFile.Bind("2.1 - UI Splits", "Splits Columns Space", 102, new ConfigDescription("UI Splits Columns Space"));
+                splitsColumnsSpace = configFile.Bind("2.1 - UI Splits", "Splits Columns Space", 0, new ConfigDescription("UI Splits Columns Space"));
                 splitsRowsSpace = configFile.Bind("2.1 - UI Splits", "Splits Rows Space", 40, new ConfigDescription("UI Splits Rows Space"));
                 
                 speedrunType =  configFile.Bind("3 - Configuration", "Speedrun Type", SpeedrunType.Permadeath, new ConfigDescription("Speedrun type"));
