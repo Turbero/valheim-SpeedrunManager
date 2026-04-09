@@ -7,6 +7,7 @@ namespace SpeedrunManager.UI
     public class SpeedrunConfigPanel
     {
         public static GameObject panel;
+        private static CustomSlider customSliderShowTimer;
         private static CustomSlider customSliderTimerPositionX;
         private static CustomSlider customSliderTimerPositionY;
         private static CustomSlider customSliderFontTimer;
@@ -71,18 +72,37 @@ namespace SpeedrunManager.UI
             addTimerSliders();
             addSplitsSliders();
 
-            //addResetPositionButton();
             //addResetTimerButton();
         }
 
         private static void addTimerSliders()
         {
+            customSliderShowTimer = new CustomSlider(
+                name: "ShowTimerSlider",
+                minValue: 0,
+                maxValue: 1,
+                sizeDelta: new Vector2(25, 10),
+                position: new Vector2(-272, 200),
+                posXIcon: -1,
+                spriteName: null,
+                posXDescription: -124,
+                description: "Show Timer",
+                posXValue: 123,
+                initValue: ConfigurationFile.showTimer.Value ? 1 : 0,
+                valueDesc: ConfigurationFile.showTimer.Value.ToString()
+            );
+            customSliderShowTimer.getGameObject().transform.SetParent(panel.transform, false);
+            customSliderShowTimer.OnValueChanged(value =>
+            {
+                customSliderShowTimer.updateTextValue(value.Equals(1f).ToString());
+                ConfigurationFile.showTimer.Value = value.Equals(1f);
+            });
             customSliderRunType = new CustomSlider(
                 name: "RunTypeSlider",
                 minValue: 0,
                 maxValue: 1,
                 sizeDelta: new Vector2(25, 10),
-                position: new Vector2(-272, 200),
+                position: new Vector2(-272, 170),
                 posXIcon: -1,
                 spriteName: null,
                 posXDescription: -124,
@@ -104,7 +124,7 @@ namespace SpeedrunManager.UI
                 minValue: 0,
                 maxValue: 2000,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(-210, 170),
+                position: new Vector2(-210, 140),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
@@ -127,7 +147,7 @@ namespace SpeedrunManager.UI
                 minValue: 0,
                 maxValue: 1100,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(-210, 140),
+                position: new Vector2(-210, 110),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
@@ -149,7 +169,7 @@ namespace SpeedrunManager.UI
                 minValue: 1,
                 maxValue: 256,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(-210, 110),
+                position: new Vector2(-210, 80),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
@@ -282,7 +302,7 @@ namespace SpeedrunManager.UI
             {
                 Logger.Log("slider changed to " + value);
                 customSliderSplitsColumnSize.updateTextValue(value.ToGlobalInvariantString());
-                ConfigurationFile.splitsColumnSize.Value = Mathf.Min(20, (int)value);
+                ConfigurationFile.splitsColumnSize.Value = (int)value;
             });
             
             customSliderSplitsColumnsSpace = new CustomSlider(

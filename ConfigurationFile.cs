@@ -23,6 +23,7 @@ namespace SpeedrunManager
         private static readonly string ConfigFileFullPath = Paths.ConfigPath + Path.DirectorySeparatorChar + ConfigFileName;
         
         //Timer configuration
+        public static ConfigEntry<bool> showTimer;
         public static ConfigEntry<Vector2> positionTimer;
         public static ConfigEntry<Color> colorTimer;
         public static ConfigEntry<float> colorWidthTimer;
@@ -49,25 +50,28 @@ namespace SpeedrunManager
 
                 debug = configFile.Bind("1 - General", "DebugMode", false, "Enabling/Disabling the debugging in the console (default = false)");
                 hotKey = configFile.Bind("1 - General", "Hotkey Panel", KeyCode.Y, "Key to show/hide the speedrun panel configuration");
-
-                positionTimer = configFile.Bind("2 - UI Timer", "Position", new Vector2(885, 20), new ConfigDescription("UI Timer position"));
-                colorTimer = configFile.Bind("2 - UI Timer", "Color", new Color(1f, 0.7176f, 0.3603f), new ConfigDescription("UI Timer color"));
-                colorWidthTimer = configFile.Bind("2 - UI Timer", "Color Intensity", 0.15f, new ConfigDescription("UI Timer color intensity (recommended between 0 and 0.5f)"));
-                fontSizeTimer = configFile.Bind("2 - UI Timer", "Size", 64, new ConfigDescription("UI Timer size"));
-                colorTimerAfterDyingInPermadeath = configFile.Bind("2 - UI Timer", "Timer Color After Dying In Permadeath", new Color(1, 0, 0), "Timer color after dying for first time in permadeath mode");
-
-                positionSplits = configFile.Bind("2.1 - UI Splits", "Splits Position", new Vector2(630, 8), new ConfigDescription("UI Splits position"));
-                colorSplits = configFile.Bind("2.1 - UI Splits", "Splits Color", Color.white, new ConfigDescription("UI Splits color"));
-                colorWidthSplits = configFile.Bind("2.1 - UI Splits", "Splits Color Intensity", 0.05f, new ConfigDescription("UI Splits color intensity (recommended between 0 and 0.5f)"));
-                fontSizeSplits = configFile.Bind("2.1 - UI Splits", "Splits Font Size", 20, new ConfigDescription("UI Splits size"));
-                splitsColumnSize = configFile.Bind("2.1 - UI Splits", "Splits Column Size", 4, new ConfigDescription("UI Splits size", new AcceptableValueRange<int>(4, 8)));
-                splitsColumnsSpace = configFile.Bind("2.1 - UI Splits", "Splits Columns Space", 0, new ConfigDescription("UI Splits Columns Space"));
-                splitsRowsSpace = configFile.Bind("2.1 - UI Splits", "Splits Rows Space", 40, new ConfigDescription("UI Splits Rows Space"));
                 
-                speedrunType =  configFile.Bind("3 - Configuration", "Speedrun Type", SpeedrunType.Permadeath, new ConfigDescription("Speedrun type"));
-                showSplits = configFile.Bind("3 - Configuration", "Show Splits", true, new ConfigDescription("Show/hide splits information"));
-                countHuginnInitTravelAsPartOfTimer = configFile.Bind("3 - Configuration", "Count from Huginn Intro", false, new ConfigDescription("If active, the time will start since Huginn is taking you to the spawn, that's ~1min47seg (default = false)"));
-                overrideBossSplitTimerIfKilledAgain = configFile.Bind("3 - Configuration", "Override Boss Split Timer if killed again", false, new ConfigDescription("Replaces the time the boss was killed in his split when it is killed again if this is enabled (default = false)"));
+                speedrunType =  configFile.Bind("2 - Configuration", "Speedrun Type", SpeedrunType.Permadeath, new ConfigDescription("Speedrun type"));
+                countHuginnInitTravelAsPartOfTimer = configFile.Bind("2 - Configuration", "Count from Huginn Intro", false, new ConfigDescription("If active, the time will start since Huginn is taking you to the spawn, that's ~1min47seg (default = false)"));
+                overrideBossSplitTimerIfKilledAgain = configFile.Bind("2 - Configuration", "Override Boss Split Timer if killed again", false, new ConfigDescription("Replaces the time the boss was killed in his split when it is killed again if this is enabled (default = false)"));
+
+                showTimer = configFile.Bind("3 - UI", "Show Timer", true, new ConfigDescription("Show/hide timer (still running while hidden)"));
+                showSplits = configFile.Bind("3 - UI", "Show Splits", true, new ConfigDescription("Show/hide splits information"));
+                
+                positionTimer = configFile.Bind("3.1 - UI Timer", "Position", new Vector2(885, 20), new ConfigDescription("UI Timer position"));
+                colorTimer = configFile.Bind("3.1 - UI Timer", "Color", new Color(0, 1, 0), new ConfigDescription("UI Timer color"));
+                colorWidthTimer = configFile.Bind("3.1 - UI Timer", "Color Intensity", 0.15f, new ConfigDescription("UI Timer color intensity (recommended between 0 and 0.5f)"));
+                fontSizeTimer = configFile.Bind("3.1 - UI Timer", "Size", 64, new ConfigDescription("UI Timer size"));
+                colorTimerAfterDyingInPermadeath = configFile.Bind("3.1 - UI Timer", "Timer Color After Dying In Permadeath", new Color(1, 0, 0), "Timer color after dying for first time in permadeath mode");
+
+                positionSplits = configFile.Bind("3.2 - UI Splits", "Splits Position", new Vector2(630, 8), new ConfigDescription("UI Splits position"));
+                colorSplits = configFile.Bind("3.2 - UI Splits", "Splits Color", Color.white, new ConfigDescription("UI Splits color"));
+                colorWidthSplits = configFile.Bind("3.2 - UI Splits", "Splits Color Intensity", 0.05f, new ConfigDescription("UI Splits color intensity (recommended between 0 and 0.5f)"));
+                fontSizeSplits = configFile.Bind("3.2 - UI Splits", "Splits Font Size", 20, new ConfigDescription("UI Splits size"));
+                splitsColumnSize = configFile.Bind("3.2 - UI Splits", "Splits Column Size", 4, new ConfigDescription("UI Splits size", new AcceptableValueRange<int>(4, 8)));
+                splitsColumnsSpace = configFile.Bind("3.2 - UI Splits", "Splits Columns Space", 0, new ConfigDescription("UI Splits Columns Space"));
+                splitsRowsSpace = configFile.Bind("3.2 - UI Splits", "Splits Rows Space", 40, new ConfigDescription("UI Splits Rows Space"));
+                
                     
                 SetupWatcher();
             }

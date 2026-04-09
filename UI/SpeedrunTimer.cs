@@ -53,10 +53,13 @@ namespace SpeedrunManager.UI
                 ConfigurationFile.positionTimer.Value.y * -1);
             _text.fontSize = ConfigurationFile.fontSizeTimer.Value;
             _text.color = ConfigurationFile.colorTimer.Value;
-            
-            Color colorToUse = HasPlayerDeadAlreadyInPermadeath()
-                ? ConfigurationFile.colorTimerAfterDyingInPermadeath.Value
-                : ConfigurationFile.colorTimer.Value;
+
+            Color colorToUse = ConfigurationFile.colorTimer.Value;
+            if (HasPlayerDeadAlreadyInPermadeath())
+            {
+                _text.text = ModStatsUtils.GetSpeedrunKnownTextValue("TimerStopped");
+                colorToUse = ConfigurationFile.colorTimerAfterDyingInPermadeath.Value;
+            }
             
             _text.color = colorToUse;
             _text.outlineColor = new Color32(
@@ -261,20 +264,8 @@ namespace SpeedrunManager.UI
 
             _text.text = !HasPlayerDeadAlreadyInPermadeath()
                 ? FormatTime((float)_displayedTime)
-                : GetTimerStopped();
+                : ModStatsUtils.GetSpeedrunKnownTextValue("TimerStopped");
             UpdateTimerUI();
-        }
-
-        private static string GetTimerStopped()
-        {
-            string timerStopped = ModStatsUtils.GetSpeedrunKnownTextValue("TimerStopped");
-            if (timerStopped == null)
-            {
-                StopTimer();
-                timerStopped = ModStatsUtils.GetSpeedrunKnownTextValue("TimerStopped");
-            }
-
-            return timerStopped;
         }
 
         private static float GetTotalPlaytimeSeconds()
@@ -328,7 +319,8 @@ namespace SpeedrunManager.UI
 
         public static void StopTimer()
         {
-            ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStopped", _text.text);
+            if (!IsTimerStoppedInPermadeath())
+                ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStopped", _text.text);
             UpdateTimerUI();
         }
 
@@ -349,6 +341,13 @@ namespace SpeedrunManager.UI
         {
             ModStatsUtils.GetStats()[PlayerStatType.Deaths] = 0;
             ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStopped", null);
+        }
+        
+        public static void ResetTimer()
+        {
+            ModStatsUtils.GetStats()[PlayerStatType.TimeInBase] = 0;
+            ModStatsUtils.GetStats()[PlayerStatType.TimeOutOfBase] = 0;
+            ResetDeaths();
         }
     }
 }
