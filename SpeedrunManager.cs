@@ -12,7 +12,7 @@ namespace SpeedrunManager
     {
         public const string GUID = "Turbero.SpeedrunManager";
         public const string NAME = "Speedrun Manager";
-        public const string VERSION = "0.5.0";
+        public const string VERSION = "0.6.4";
 
         private readonly Harmony harmony = new Harmony(GUID);
         
@@ -52,8 +52,7 @@ namespace SpeedrunManager
                 SpeedrunConfigPanel.Hide(false);
             }
 
-            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return) || 
-                Player.m_localPlayer.IsDead())
+            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return) || Player.m_localPlayer.IsDead())
             {
                 SpeedrunConfigPanel.Hide();
             }
@@ -77,10 +76,10 @@ namespace SpeedrunManager
 
         private static bool CanShowSpeedrunConfigPanel()
         {
-            return Player.m_localPlayer != null && Player.m_localPlayer.CanMove() &&
-                   !Game.IsPaused() &&
-                   !InventoryGui.IsVisible() &&
-                   !Console.IsVisible() &&
+            return Player.m_localPlayer != null && Player.m_localPlayer.CanMove() && //player must be able to move
+                   !Game.IsPaused() && //not when game is paused
+                   !InventoryGui.IsVisible() && //not when inventory is opened
+                   !Console.IsVisible() && //not when console is visible
                    !Hud.instance.transform.parent.Find("Chat_box/root/ChatInput").gameObject.activeSelf && // Not when typing in the chat
                    !Game.instance.transform.Find("LoadingGUI/PixelFix/IngameGui/TextInput/panel").gameObject.activeSelf && //Not when changing an input field
                    !Minimap.instance.transform.Find("large").gameObject.activeSelf && //Not while large map is opened

@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -83,6 +84,7 @@
     <Compile Include="BossNameEnum.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="ConfigurationFile.cs" />
+    <Compile Include="ControllerUtils.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ModStatsUtils.cs" />
     <Compile Include="ModUtils.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="Patches\Splits.cs" />
     <Compile Include="SpeedrunManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\ResetConfirmDialog.cs" />
     <Compile Include="UI\CustomSlider.cs" />
     <Compile Include="UI\SpeedrunConfigPanel.cs" />
     <Compile Include="UI\SpeedrunTimer.cs" />

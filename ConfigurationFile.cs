@@ -108,6 +108,8 @@ namespace SpeedrunManager
             if (SpeedrunTimer._text != null)
             {
                 // Reload config values
+                SpeedrunTimer.UpdateVisibility();
+                SpeedrunTimer.UpdateTimer();
                 SpeedrunTimer.UpdateTimerUI();
                 SpeedrunTimer.DrawSplits();
             }

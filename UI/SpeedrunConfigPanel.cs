@@ -21,6 +21,8 @@ namespace SpeedrunManager.UI
         private static CustomSlider customSliderRunType;
         private static CustomSlider customSliderShowSplits;
 
+        private static ResetConfirmDialog resetConfirmDialog;
+
         public static void Create()
         {
             Transform skillsFrameTransform =
@@ -67,7 +69,7 @@ namespace SpeedrunManager.UI
 
             Button closeButton = closeButtonGo.GetComponent<Button>();
             closeButton.onClick = new Button.ButtonClickedEvent();
-            closeButton.onClick.AddListener(() => { Hide(); });
+            closeButton.onClick.AddListener(() => { resetConfirmDialog.showResetDialog(false); Hide(); });
             
             // Reset button
             GameObject resetButtonGo = Object.Instantiate(closeButtonGo.gameObject, panel.transform);
@@ -82,12 +84,13 @@ namespace SpeedrunManager.UI
 
             Button resetButton = resetButtonGo.GetComponent<Button>();
             resetButton.onClick = new Button.ButtonClickedEvent();
-            resetButton.onClick.AddListener(() => { SpeedrunTimer.ResetTimer(); Hide(); });
+            resetButton.onClick.AddListener(() => { resetConfirmDialog.showResetDialog(true, false); });
             
             addTimerSliders();
             addSplitsSliders();
 
-            //addResetTimerButton();
+            //Reset dialog
+            resetConfirmDialog = new ResetConfirmDialog();
         }
 
         private static void addTimerSliders()
@@ -381,12 +384,14 @@ namespace SpeedrunManager.UI
             panel.SetActive(true);
             Hud.instance.transform.Find("hudroot").gameObject.SetActive(false);
             Menu.instance.Show();
+            resetConfirmDialog.resetConfirmDialog.SetActive(false);
         }
 
         public static void Hide(bool hideMenu = true)
         {
             panel.SetActive(false);
             Hud.instance.transform.Find("hudroot").gameObject.SetActive(true);
+            resetConfirmDialog.showResetDialog(false);
             if (hideMenu)
                 Menu.instance.Hide();
         }

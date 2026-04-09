@@ -9,6 +9,7 @@ namespace SpeedrunManager.UI
 {
     public static class SpeedrunTimer
     {
+        private static bool painted = false;
         private static RectTransform rect;
         public static TextMeshProUGUI _text;
         private static GameObject goSplitsTimers;
@@ -69,12 +70,6 @@ namespace SpeedrunManager.UI
                 (byte)(colorToUse.b * 255f),
                 255);
             _text.outlineWidth = ConfigurationFile.colorWidthTimer.Value;
-            
-            if (goSplitsTimers != null)
-                goSplitsTimers.SetActive(ConfigurationFile.showSplits.Value);
-            
-            if (rect != null)
-                rect.gameObject.SetActive(ConfigurationFile.showTimer.Value);
         }
 
         private static void LoadSplits()
@@ -195,6 +190,14 @@ namespace SpeedrunManager.UI
                 }
             }
         }
+
+        public static void UpdateVisibility()
+        {
+            if (goSplitsTimers != null)
+                goSplitsTimers.SetActive(ConfigurationFile.showSplits.Value);
+            if (rect != null)
+                rect.gameObject.SetActive(ConfigurationFile.showTimer.Value);
+        }
         
         public static void Update()
         {
@@ -215,8 +218,12 @@ namespace SpeedrunManager.UI
                 LoadSplits();
                 splitsLoaded = true;
             }
-
-            if (IsTimerStoppedInPermadeath())
+            
+            //Visibility
+            UpdateVisibility();
+            
+            //Stop if permadeath
+            if (painted && IsTimerStoppedInPermadeath())
                 return;
 
             // Timer start check
@@ -250,6 +257,14 @@ namespace SpeedrunManager.UI
             }
 
             //Timer update
+            UpdateTimer();
+            UpdateTimerUI();
+            
+            painted = true;
+        }
+
+        public static void UpdateTimer()
+        {
             float statTime = GetTotalPlaytimeSeconds();
 
             double now = Time.realtimeSinceStartupAsDouble;
@@ -269,7 +284,6 @@ namespace SpeedrunManager.UI
             _text.text = !HasPlayerDeadAlreadyInPermadeath()
                 ? FormatTime((float)_displayedTime)
                 : ModStatsUtils.GetSpeedrunKnownTextValue("TimerStopped");
-            UpdateTimerUI();
         }
 
         private static float GetTotalPlaytimeSeconds()
@@ -350,11 +364,18 @@ namespace SpeedrunManager.UI
             stats[PlayerStatType.Deaths] = 0;
             ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStopped", null);
             //Reset splits
+            GameObject splitsObject = GameObject.Find("SpeedrunTimerSplits");
+            if (splitsObject != null)
+                Object.Destroy(splitsObject);
+            splits.Clear();
+            splitsLoaded = false;
             var worldName = ZNet.instance?.GetWorldName();
             var knownTexts = ModStatsUtils.GetKnownTexts();
             var list = knownTexts.Keys.ToList().FindAll(k => k.StartsWith(SpeedrunManager.GUID + "_" + worldName + "_"));
             foreach (var key in list)
                 knownTexts.Remove(key);
+            _text.text = "00:00:00";
+            UpdateTimerUI();
         }
     }
 }
