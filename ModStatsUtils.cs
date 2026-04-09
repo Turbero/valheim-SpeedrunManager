@@ -8,7 +8,7 @@ namespace SpeedrunManager
         public static Dictionary<string, string> GetKnownTexts()
         {
             if (Player.m_localPlayer == null)
-                return null;
+                return new Dictionary<string, string>();
             
             return (Dictionary<string, string>)ModUtils.GetPrivateValue(Player.m_localPlayer, "m_knownTexts");
         }
@@ -16,7 +16,7 @@ namespace SpeedrunManager
         public static Dictionary<PlayerStatType, float> GetStats()
         {
             if (Game.instance == null)
-                return null;
+                return new Dictionary<PlayerStatType, float>();
 
             var field = typeof(Game).GetField("m_playerProfile", BindingFlags.Instance | BindingFlags.NonPublic);
 
