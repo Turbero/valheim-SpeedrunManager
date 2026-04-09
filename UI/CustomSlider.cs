@@ -38,7 +38,7 @@ namespace SpeedrunManager.UI
             slider.value = initValue;
             this.initValue = initValue;
             //m_WholeNumbers = 1 makes automatically stepSize=1
-            typeof(Slider).GetField("m_WholeNumbers", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(slider, true);
+            typeof(Slider).GetField("m_WholeNumbers", BindingFlags.NonPublic | BindingFlags.Instance)?.SetValue(slider, true);
 
             //Background
             GameObject background = new GameObject("Background", typeof(RectTransform), typeof(Image));
@@ -130,7 +130,7 @@ namespace SpeedrunManager.UI
                     updateTextValue(this.initValue.ToString());
                 });
                 UITooltip resetTooltip = resetButton.gameObject.AddComponent<UITooltip>();
-                resetTooltip.m_tooltipPrefab = GameObject.Instantiate(
+                resetTooltip.m_tooltipPrefab = Object.Instantiate(
                     InventoryGui.instance.transform.Find("root/Info/Skills").GetComponent<UITooltip>().m_tooltipPrefab);
                 resetTooltip.m_text = "Reset";
             }
