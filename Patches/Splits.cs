@@ -11,7 +11,6 @@ namespace SpeedrunManager.Patches
         public static void Postfix(Character __instance)
         {
             if (__instance == null) return;
-            
             if (__instance.IsBoss())
             {
                 string bossName = __instance.name.Replace("(Clone)", "");
@@ -22,9 +21,7 @@ namespace SpeedrunManager.Patches
                 BossNameEnum bossNameEnum = ModUtils.parseBossName(bossName);
                 Split split = new Split(bossNameEnum, timerValue);
                 SpeedrunTimer.AddSplitTimer(split);
-            }
-
-            if (ConfigurationFile.speedrunType.Value == SpeedrunType.Permadeath && __instance.IsPlayer())
+            } else if (__instance.IsPlayer() && ConfigurationFile.speedrunType.Value == SpeedrunType.Permadeath)
             {
                 SpeedrunTimer.StopTimer();
             }
