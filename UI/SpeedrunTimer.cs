@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
@@ -71,6 +72,9 @@ namespace SpeedrunManager.UI
             
             if (goSplitsTimers != null)
                 goSplitsTimers.SetActive(ConfigurationFile.showSplits.Value);
+            
+            if (rect != null)
+                rect.gameObject.SetActive(ConfigurationFile.showTimer.Value);
         }
 
         private static void LoadSplits()
@@ -335,19 +339,22 @@ namespace SpeedrunManager.UI
             return ConfigurationFile.speedrunType.Value == SpeedrunType.Permadeath &&
                    ModStatsUtils.GetStats().GetValueOrDefaultPiktiv(PlayerStatType.Deaths, 0) > 0;
         }
-
-        //For future
-        public static void ResetDeaths()
-        {
-            ModStatsUtils.GetStats()[PlayerStatType.Deaths] = 0;
-            ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStopped", null);
-        }
         
         public static void ResetTimer()
         {
-            ModStatsUtils.GetStats()[PlayerStatType.TimeInBase] = 0;
-            ModStatsUtils.GetStats()[PlayerStatType.TimeOutOfBase] = 0;
-            ResetDeaths();
+            var stats = ModStatsUtils.GetStats();
+            //Reset time stats
+            stats[PlayerStatType.TimeInBase] = 0;
+            stats[PlayerStatType.TimeOutOfBase] = 0;
+            //Reset deaths
+            stats[PlayerStatType.Deaths] = 0;
+            ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStopped", null);
+            //Reset splits
+            var worldName = ZNet.instance?.GetWorldName();
+            var knownTexts = ModStatsUtils.GetKnownTexts();
+            var list = knownTexts.Keys.ToList().FindAll(k => k.StartsWith(SpeedrunManager.GUID + "_" + worldName + "_"));
+            foreach (var key in list)
+                knownTexts.Remove(key);
         }
     }
 }

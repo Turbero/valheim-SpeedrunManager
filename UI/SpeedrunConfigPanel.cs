@@ -55,19 +55,34 @@ namespace SpeedrunManager.UI
             // Close button
             Transform closeButtonTransform =
                 InventoryGui.instance.m_skillsDialog.transform.Find("SkillsFrame/Closebutton");
-            GameObject closebuttonGo = Object.Instantiate(closeButtonTransform.gameObject, panel.transform);
-            closebuttonGo.name = "CloseButton";
-            closebuttonGo.transform.SetParent(panel.transform, false);
+            GameObject closeButtonGo = Object.Instantiate(closeButtonTransform.gameObject, panel.transform);
+            closeButtonGo.name = "CloseButton";
+            closeButtonGo.transform.SetParent(panel.transform, false);
 
-            RectTransform buttonTextRect = closebuttonGo.GetComponent<RectTransform>();
-            buttonTextRect.anchoredPosition = new Vector2(0, 40);
+            RectTransform buttonTextRect = closeButtonGo.GetComponent<RectTransform>();
+            buttonTextRect.anchoredPosition = new Vector2(200, 40);
 
-            TMP_Text buttonText = closebuttonGo.GetComponentInChildren<TMP_Text>();
+            TMP_Text buttonText = closeButtonGo.GetComponentInChildren<TMP_Text>();
             buttonText.text = Localization.instance.Localize("$menu_close");
 
-            Button closeButton = closebuttonGo.GetComponent<Button>();
+            Button closeButton = closeButtonGo.GetComponent<Button>();
             closeButton.onClick = new Button.ButtonClickedEvent();
             closeButton.onClick.AddListener(() => { Hide(); });
+            
+            // Reset button
+            GameObject resetButtonGo = Object.Instantiate(closeButtonGo.gameObject, panel.transform);
+            resetButtonGo.name = "ResetButton";
+            resetButtonGo.transform.SetParent(panel.transform, false);
+
+            RectTransform resetButtonTextRect = resetButtonGo.GetComponent<RectTransform>();
+            resetButtonTextRect.anchoredPosition = new Vector2(-200, 40);
+
+            TMP_Text resetButtonText = resetButtonGo.GetComponentInChildren<TMP_Text>();
+            resetButtonText.text = "Reset";
+
+            Button resetButton = resetButtonGo.GetComponent<Button>();
+            resetButton.onClick = new Button.ButtonClickedEvent();
+            resetButton.onClick.AddListener(() => { SpeedrunTimer.ResetTimer(); Hide(); });
             
             addTimerSliders();
             addSplitsSliders();
