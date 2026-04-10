@@ -2,7 +2,7 @@ using System.Reflection;
 using TMPro;
 using UnityEngine;
 
-namespace DetailedLevels
+namespace SpeedrunManager
 {
     public class ControllerUtils
     {

@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Reflection;
-using DetailedLevels;
 
 namespace SpeedrunManager.UI
 {
