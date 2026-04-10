@@ -12,7 +12,7 @@ namespace SpeedrunManager
     {
         public const string GUID = "Turbero.SpeedrunManager";
         public const string NAME = "Speedrun Manager";
-        public const string VERSION = "0.6.4";
+        public const string VERSION = "1.0.0";
 
         private readonly Harmony harmony = new Harmony(GUID);
         
@@ -49,12 +49,18 @@ namespace SpeedrunManager
             // Check if certain keys are hit to close panel
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                SpeedrunConfigPanel.Hide(false);
+                if (SpeedrunConfigPanel.IsVisible())
+                {
+                    SpeedrunConfigPanel.Hide(false);
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return) || Player.m_localPlayer.IsDead())
             {
-                SpeedrunConfigPanel.Hide();
+                if (SpeedrunConfigPanel.IsVisible())
+                {
+                    SpeedrunConfigPanel.Hide();
+                }
             }
 
             // Hotkey to open/close skills dialog (if game is not paused)
