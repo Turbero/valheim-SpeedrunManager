@@ -150,6 +150,7 @@ namespace SpeedrunManager.UI
                 rectIconObj.pivot = new Vector2(0, 1);
                 rectIconObj.anchoredPosition = new Vector2(splitPosX, splitPosY);
                 rectIconObj.sizeDelta = new Vector2(32, 32);
+                //rectIconObj.sizeDelta = new Vector2(32f * ConfigurationFile.fontSizeSplits.Value / 20f, 32f * ConfigurationFile.fontSizeSplits.Value / 20f);
                 Image img = splitIconObj.GetComponent<Image>();
                 img.sprite = ModUtils.getSprite(split.BossName.GetTrophySpriteKey());
                 
@@ -162,7 +163,7 @@ namespace SpeedrunManager.UI
                 rectTimeObj.anchorMax = new Vector2(0, 1);
                 rectTimeObj.pivot = new Vector2(0, 1);
                 rectTimeObj.anchoredPosition = new Vector2(splitPosX + 40, splitPosY);
-                rectTimeObj.sizeDelta = new Vector2(64, 32);
+                rectTimeObj.sizeDelta = new Vector2(256, 32);
                 TextMeshProUGUI textTimeObj = splitTimeObj.GetComponent<TextMeshProUGUI>();
                 textTimeObj.transform.SetParent(goSplitsTimers.transform);
                 textTimeObj.fontSize = ConfigurationFile.fontSizeSplits.Value;

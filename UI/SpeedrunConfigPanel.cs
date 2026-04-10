@@ -13,11 +13,11 @@ namespace SpeedrunManager.UI
         private static CustomSlider customSliderFontTimer;
         private static CustomSlider customSliderSplitsPositionX;
         private static CustomSlider customSliderSplitsPositionY;
-        private static CustomSlider customSliderFontSplits;
         private static CustomSlider customSliderSplitsColumnSize;
         private static CustomSlider customSliderSplitsColumnsSpace;
         private static CustomSlider customSliderSplitsRowsSpace;
-        
+        //private static CustomSlider customSliderFontSplits;
+
         private static CustomSlider customSliderRunType;
         private static CustomSlider customSliderShowSplits;
 
@@ -280,34 +280,12 @@ namespace SpeedrunManager.UI
                 ConfigurationFile.positionSplits.Value = new Vector2(ConfigurationFile.positionSplits.Value.x, value);
             });
             
-            customSliderFontSplits = new CustomSlider(
-                name: "FontSplitsSlider",
-                minValue: 1,
-                maxValue: 256,
-                sizeDelta: new Vector2(150, 10),
-                position: new Vector2(240, 110),
-                posXIcon: 0,
-                spriteName: null,
-                posXDescription: -186,
-                description: "Splits Size",
-                posXValue: 185,
-                initValue: ConfigurationFile.fontSizeSplits.Value,
-                valueDesc: ConfigurationFile.fontSizeSplits.Value.ToString(),
-                hasResetButton: true
-            );
-            customSliderFontSplits.getGameObject().transform.SetParent(panel.transform, false);
-            customSliderFontSplits.OnValueChanged(value =>
-            {
-                Logger.Log("slider changed to " + value);
-                customSliderFontSplits.updateTextValue(value.ToGlobalInvariantString());
-                ConfigurationFile.fontSizeSplits.Value = (int)value;
-            });
             customSliderSplitsColumnSize = new CustomSlider(
                 name: "SplitsColumnSize",
                 minValue: 4,
                 maxValue: 8,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(240, 80),
+                position: new Vector2(240, 110),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
@@ -328,9 +306,9 @@ namespace SpeedrunManager.UI
             customSliderSplitsColumnsSpace = new CustomSlider(
                 name: "SplitsColumnsSpace",
                 minValue: 0,
-                maxValue: 256,
+                maxValue: 2000,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(240, 50),
+                position: new Vector2(240, 80),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
@@ -352,7 +330,7 @@ namespace SpeedrunManager.UI
                 minValue: 40,
                 maxValue: 256,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(240, 20),
+                position: new Vector2(240, 50),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,
@@ -369,6 +347,30 @@ namespace SpeedrunManager.UI
                 customSliderSplitsRowsSpace.updateTextValue(value.ToGlobalInvariantString());
                 ConfigurationFile.splitsRowsSpace.Value = (int)value;
             });
+            
+            //TODO
+            /*customSliderFontSplits = new CustomSlider(
+                name: "FontSplitsSlider",
+                minValue: 1,
+                maxValue: 256,
+                sizeDelta: new Vector2(150, 10),
+                position: new Vector2(240, 20),
+                posXIcon: 0,
+                spriteName: null,
+                posXDescription: -186,
+                description: "Splits Size",
+                posXValue: 185,
+                initValue: ConfigurationFile.fontSizeSplits.Value,
+                valueDesc: ConfigurationFile.fontSizeSplits.Value.ToString(),
+                hasResetButton: true
+            );
+            customSliderFontSplits.getGameObject().transform.SetParent(panel.transform, false);
+            customSliderFontSplits.OnValueChanged(value =>
+            {
+                Logger.Log("slider changed to " + value);
+                customSliderFontSplits.updateTextValue(value.ToGlobalInvariantString());
+                ConfigurationFile.fontSizeSplits.Value = (int)value;
+            });*/
         }
 
         public static bool IsCreated()
