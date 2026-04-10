@@ -6,12 +6,15 @@ namespace SpeedrunManager
 {
     public class ControllerUtils
     {
-        public static void HideGamePad(Transform buttonGo, InventoryGui inventoryGui = null)
+        public static void RemoveHint(Transform buttonGo, InventoryGui inventoryGui = null)
         {
             UIGamePad uiGamePad = null;
             if (buttonGo.TryGetComponent(out uiGamePad))
             {
-                uiGamePad.gameObject.SetActive(false);
+                if (ZInput.instance == null)
+                    ZInput.Initialize();
+                
+                uiGamePad.m_hint.GetComponentInChildren<TextMeshProUGUI>(true).text = "";
             }
         }
         
@@ -21,15 +24,10 @@ namespace SpeedrunManager
             if (buttonGo.TryGetComponent(out uiGamePad))
             {
                 string gamepadKey = KeyCodeToString(gamepadKeyCode);
-                if (ZInput.instance != null)
-                {
-                    uiGamePad.m_hint.GetComponentInChildren<TextMeshProUGUI>(true).text = ZInput.instance.GetBoundKeyString(gamepadKey, true);
-                }
-                else
-                {
+                if (ZInput.instance == null)
                     ZInput.Initialize();
-                    uiGamePad.m_hint.GetComponentInChildren<TextMeshProUGUI>(true).text = ZInput.instance?.GetBoundKeyString(gamepadKey, true);
-                }
+
+                uiGamePad.m_hint.GetComponentInChildren<TextMeshProUGUI>(true).text = ZInput.instance?.GetBoundKeyString(gamepadKey, true);
                 uiGamePad.m_zinputKey = gamepadKey;
                 uiGamePad.m_keyCode = gamepadKeyCode;
                 if (inventoryGui != null && inventoryGui.m_crafting.TryGetComponent(out UIGroupHandler group))

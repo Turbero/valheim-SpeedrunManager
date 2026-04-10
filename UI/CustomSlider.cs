@@ -120,7 +120,7 @@ namespace SpeedrunManager.UI
             if (hasResetButton) {
                 resetButton = Object.Instantiate(InventoryGui.instance.m_takeAllButton, sliderObject.transform);
                 resetButton.name = "ResetButton";
-                ControllerUtils.HideGamePad(resetButton.transform);
+                ControllerUtils.RemoveHint(resetButton.transform);
                 resetButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(140, 0);
                 resetButton.GetComponent<RectTransform>().sizeDelta = new Vector2(30, 30);
                 resetButton.GetComponentInChildren<TextMeshProUGUI>().text = "R";
