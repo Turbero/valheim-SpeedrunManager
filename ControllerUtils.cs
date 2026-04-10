@@ -6,6 +6,15 @@ namespace DetailedLevels
 {
     public class ControllerUtils
     {
+        public static void HideGamePad(Transform buttonGo, InventoryGui inventoryGui = null)
+        {
+            UIGamePad uiGamePad = null;
+            if (buttonGo.TryGetComponent(out uiGamePad))
+            {
+                uiGamePad.gameObject.SetActive(false);
+            }
+        }
+        
         public static void BindGamePad(Transform buttonGo, KeyCode gamepadKeyCode, InventoryGui inventoryGui = null)
         {
             UIGamePad uiGamePad = null;
