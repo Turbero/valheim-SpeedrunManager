@@ -60,6 +60,7 @@ namespace SpeedrunManager.UI
             GameObject closeButtonGo = Object.Instantiate(closeButtonTransform.gameObject, panel.transform);
             closeButtonGo.name = "CloseButton";
             closeButtonGo.transform.SetParent(panel.transform, false);
+            ControllerUtils.BindGamePad(closeButtonGo.transform, KeyCode.JoystickButton1);
 
             RectTransform buttonTextRect = closeButtonGo.GetComponent<RectTransform>();
             buttonTextRect.anchoredPosition = new Vector2(200, 40);
@@ -75,6 +76,7 @@ namespace SpeedrunManager.UI
             GameObject resetButtonGo = Object.Instantiate(closeButtonGo.gameObject, panel.transform);
             resetButtonGo.name = "ResetButton";
             resetButtonGo.transform.SetParent(panel.transform, false);
+            ControllerUtils.BindGamePad(resetButtonGo.transform, KeyCode.JoystickButton2);
 
             RectTransform resetButtonTextRect = resetButtonGo.GetComponent<RectTransform>();
             resetButtonTextRect.anchoredPosition = new Vector2(-200, 40);
