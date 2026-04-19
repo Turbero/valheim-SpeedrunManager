@@ -63,7 +63,7 @@ namespace SpeedrunManager
                 }
             }
 
-            // Hotkey to open/close skills dialog (if game is not paused)
+            // Hotkey to open/close speedrun config
             if (Input.GetKeyDown(ConfigurationFile.hotKey.Value))
             {
                 if (SpeedrunConfigPanel.IsVisible())
@@ -82,7 +82,8 @@ namespace SpeedrunManager
 
         private static bool CanShowSpeedrunConfigPanel()
         {
-            return Player.m_localPlayer != null && Player.m_localPlayer.CanMove() && //player must be able to move
+            return Player.m_localPlayer != null && 
+                   (Player.m_localPlayer.CanMove() || Player.m_localPlayer.IsSitting()) && //player must be able to move or be sitting
                    !Game.IsPaused() && //not when game is paused
                    !InventoryGui.IsVisible() && //not when inventory is opened
                    !Console.IsVisible() && //not when console is visible
