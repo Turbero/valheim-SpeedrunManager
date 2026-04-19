@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using HarmonyLib;
+using JetBrains.Annotations;
 using SpeedrunManager.UI;
 
 namespace SpeedrunManager.Patches
@@ -8,8 +9,10 @@ namespace SpeedrunManager.Patches
     public class RegisterBossDefeatPatch
     {
         // This will be executed in the player that hits last when the boss dies
+        [UsedImplicitly]
         public static void Postfix(Character __instance)
         {
+            Logger.Log("Character OnDeath");
             if (__instance == null) return;
             if (__instance.IsBoss())
             {
@@ -21,9 +24,6 @@ namespace SpeedrunManager.Patches
                 BossNameEnum bossNameEnum = ModUtils.parseBossName(bossName);
                 Split split = new Split(bossNameEnum, timerValue);
                 SpeedrunTimer.AddSplitTimer(split);
-            } else if (__instance.IsPlayer() && ConfigurationFile.speedrunType.Value == SpeedrunType.Permadeath)
-            {
-                SpeedrunTimer.StopTimer();
             }
         }
 
@@ -40,6 +40,21 @@ namespace SpeedrunManager.Patches
             {
                 dicKnownTexts.Remove(splitKey);
                 dicKnownTexts.Add(splitKey, timerValue);
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(Player), "OnDeath")]
+    public class PlayerDeathDefeatPatch
+    {
+        [UsedImplicitly]
+        public static void Postfix(Player __instance)
+        {
+            Logger.Log("Player OnDeath");
+            if (__instance == null) return;
+            if (ConfigurationFile.speedrunType.Value == SpeedrunType.Permadeath)
+            {
+                SpeedrunTimer.StopTimer();
             }
         }
     }

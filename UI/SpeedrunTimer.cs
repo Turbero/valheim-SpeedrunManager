@@ -339,7 +339,16 @@ namespace SpeedrunManager.UI
         public static void StopTimer()
         {
             if (!IsTimerStoppedInPermadeath())
-                ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStopped", _text.text);
+            {
+                string valueToSave = FormatTime((float)_displayedTime);
+                Logger.Log("Permadeath 1st kill timer to save: "+valueToSave);
+                ModStatsUtils.SetSpeedrunKnownTextKeyValue("TimerStopped", valueToSave);
+                UpdateTimer();
+            }
+            else
+            {
+                Logger.Log("value already saved");
+            }
             UpdateTimerUI();
         }
 
