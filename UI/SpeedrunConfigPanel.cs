@@ -16,7 +16,7 @@ namespace SpeedrunManager.UI
         private static CustomSlider customSliderSplitsColumnSize;
         private static CustomSlider customSliderSplitsColumnsSpace;
         private static CustomSlider customSliderSplitsRowsSpace;
-        //private static CustomSlider customSliderFontSplits;
+        private static CustomSlider customSliderFontSplits;
 
         private static CustomSlider customSliderRunType;
         private static CustomSlider customSliderShowSplits;
@@ -150,7 +150,7 @@ namespace SpeedrunManager.UI
                 posXDescription: -186,
                 description: "Timer X-ayis",
                 posXValue: 185,
-                initValue: (int)ConfigurationFile.positionTimer.Value.x,
+                initValue: (int)DefaultUIPositions.positionTimer.x,
                 valueDesc: ConfigurationFile.positionTimer.Value.x.ToGlobalInvariantString(),
                 hasResetButton: true
             );
@@ -173,7 +173,7 @@ namespace SpeedrunManager.UI
                 posXDescription: -186,
                 description: "Timer Y-ayis",
                 posXValue: 185,
-                initValue: (int)ConfigurationFile.positionTimer.Value.y,
+                initValue: (int)DefaultUIPositions.positionTimer.y,
                 valueDesc: ConfigurationFile.positionTimer.Value.y.ToGlobalInvariantString(),
                 hasResetButton: true
             );
@@ -195,7 +195,7 @@ namespace SpeedrunManager.UI
                 posXDescription: -186,
                 description: "Timer Size",
                 posXValue: 185,
-                initValue: ConfigurationFile.fontSizeTimer.Value,
+                initValue: DefaultUIPositions.fontSizeTimer,
                 valueDesc: ConfigurationFile.fontSizeTimer.Value.ToString(),
                 hasResetButton: true
             );
@@ -245,7 +245,7 @@ namespace SpeedrunManager.UI
                 posXDescription: -186,
                 description: "Splits X-ayis",
                 posXValue: 185,
-                initValue: (int)ConfigurationFile.positionSplits.Value.x,
+                initValue: (int)DefaultUIPositions.positionSplits.x,
                 valueDesc: ConfigurationFile.positionSplits.Value.x.ToGlobalInvariantString(),
                 hasResetButton: true
             );
@@ -268,7 +268,7 @@ namespace SpeedrunManager.UI
                 posXDescription: -186,
                 description: "Splits Y-ayis",
                 posXValue: 185,
-                initValue: (int)ConfigurationFile.positionSplits.Value.y,
+                initValue: (int)DefaultUIPositions.positionSplits.y,
                 valueDesc: ConfigurationFile.positionSplits.Value.y.ToGlobalInvariantString(),
                 hasResetButton: true
             );
@@ -291,7 +291,7 @@ namespace SpeedrunManager.UI
                 posXDescription: -186,
                 description: "Splits Column Size",
                 posXValue: 185,
-                initValue: ConfigurationFile.splitsColumnSize.Value,
+                initValue: DefaultUIPositions.splitsColumnSize,
                 valueDesc: ConfigurationFile.splitsColumnSize.Value.ToString(),
                 hasResetButton: true
             );
@@ -314,7 +314,7 @@ namespace SpeedrunManager.UI
                 posXDescription: -186,
                 description: "Splits Columns Space",
                 posXValue: 185,
-                initValue: ConfigurationFile.splitsColumnsSpace.Value,
+                initValue: DefaultUIPositions.splitsColumnsSpace,
                 valueDesc: ConfigurationFile.splitsColumnsSpace.Value.ToString(),
                 hasResetButton: true
             );
@@ -336,7 +336,7 @@ namespace SpeedrunManager.UI
                 posXDescription: -186,
                 description: "Splits Rows Space",
                 posXValue: 185,
-                initValue: ConfigurationFile.splitsRowsSpace.Value,
+                initValue: DefaultUIPositions.splitsRowsSpace,
                 valueDesc: ConfigurationFile.splitsRowsSpace.Value.ToString(),
                 hasResetButton: true
             );
@@ -348,8 +348,7 @@ namespace SpeedrunManager.UI
                 ConfigurationFile.splitsRowsSpace.Value = (int)value;
             });
             
-            //TODO
-            /*customSliderFontSplits = new CustomSlider(
+            customSliderFontSplits = new CustomSlider(
                 name: "FontSplitsSlider",
                 minValue: 1,
                 maxValue: 256,
@@ -360,17 +359,18 @@ namespace SpeedrunManager.UI
                 posXDescription: -186,
                 description: "Splits Size",
                 posXValue: 185,
-                initValue: ConfigurationFile.fontSizeSplits.Value,
+                initValue: DefaultUIPositions.fontSizeSplits,
                 valueDesc: ConfigurationFile.fontSizeSplits.Value.ToString(),
                 hasResetButton: true
             );
-            customSliderFontSplits.getGameObject().transform.SetParent(panel.transform, false);
+            //TODO
+            //customSliderFontSplits.getGameObject().transform.SetParent(panel.transform, false);
             customSliderFontSplits.OnValueChanged(value =>
             {
                 Logger.Log("slider changed to " + value);
                 customSliderFontSplits.updateTextValue(value.ToGlobalInvariantString());
                 ConfigurationFile.fontSizeSplits.Value = (int)value;
-            });*/
+            });
         }
 
         public static bool IsCreated()
