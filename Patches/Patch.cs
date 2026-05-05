@@ -17,4 +17,13 @@ namespace SpeedrunManager.Patches
             SpeedrunTimer.Update();
         }
     }
+    
+    [HarmonyPatch(typeof(Hud), "Awake")]
+    public static class Hud_Awake_Patch
+    {
+        static void Postfix(Hud __instance)
+        {
+            __instance.m_effectsPerRow = ConfigurationFile.effectsPerRow.Value;
+        }
+    }
 }

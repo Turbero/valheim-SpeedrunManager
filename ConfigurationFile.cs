@@ -12,6 +12,19 @@ namespace SpeedrunManager
         Permadeath,
         InfiniteLives
     }
+
+    public class DefaultUIPositions
+    {
+        public static readonly Vector2 positionTimer = new Vector2(885, 20);
+        public static readonly int fontSizeTimer = 64;
+        
+        public static readonly Vector2 positionSplits = new Vector2(630, 8);
+        public static readonly int fontSizeSplits = 20;
+        public static readonly int splitsColumnSize = 4;
+        public static readonly int splitsColumnsSpace = 0;
+        public static readonly int splitsRowsSpace = 40;
+    }
+    
     internal class ConfigurationFile
     {
         public static ConfigEntry<bool> debug;
@@ -22,6 +35,12 @@ namespace SpeedrunManager
         private static readonly string ConfigFileName = SpeedrunManager.GUID + ".cfg";
         private static readonly string ConfigFileFullPath = Paths.ConfigPath + Path.DirectorySeparatorChar + ConfigFileName;
         
+        //Speedrun configuration
+        public static ConfigEntry<Color> colorTimerAfterDyingInPermadeath;
+        public static ConfigEntry<bool> countHuginnInitTravelAsPartOfTimer;
+        public static ConfigEntry<bool> overrideBossSplitTimerIfKilledAgain;
+        public static ConfigEntry<int> effectsPerRow;
+        
         //Timer configuration
         public static ConfigEntry<bool> showTimer;
         public static ConfigEntry<Vector2> positionTimer;
@@ -29,6 +48,7 @@ namespace SpeedrunManager
         public static ConfigEntry<float> colorWidthTimer;
         public static ConfigEntry<int> fontSizeTimer;
         //Splits configuration
+        public static ConfigEntry<bool> showSplits;
         public static ConfigEntry<Vector2> positionSplits;
         public static ConfigEntry<Color> colorSplits;
         public static ConfigEntry<float> colorWidthSplits;
@@ -37,11 +57,6 @@ namespace SpeedrunManager
         public static ConfigEntry<int> splitsColumnsSpace;
         public static ConfigEntry<int> splitsRowsSpace;
         
-        //Speedrun configuration
-        public static ConfigEntry<bool> showSplits;
-        public static ConfigEntry<Color> colorTimerAfterDyingInPermadeath;
-        public static ConfigEntry<bool> countHuginnInitTravelAsPartOfTimer;
-        public static ConfigEntry<bool> overrideBossSplitTimerIfKilledAgain;
 
         internal static void LoadConfig(BaseUnityPlugin plugin)
         {
@@ -54,6 +69,7 @@ namespace SpeedrunManager
                 speedrunType =  configFile.Bind("2 - Configuration", "Speedrun Type", SpeedrunType.Permadeath, new ConfigDescription("Speedrun type"));
                 countHuginnInitTravelAsPartOfTimer = configFile.Bind("2 - Configuration", "Count from Huginn Intro", false, new ConfigDescription("If active, the time will start since Huginn is taking you to the spawn, that's ~1min47seg (default = false)"));
                 overrideBossSplitTimerIfKilledAgain = configFile.Bind("2 - Configuration", "Override Boss Split Timer if killed again", false, new ConfigDescription("Replaces the time the boss was killed in his split when it is killed again if this is enabled (default = false)"));
+                effectsPerRow = configFile.Bind("2 - Configuration", "Effects Per Row", 7, new ConfigDescription("Effects Per Row", new AcceptableValueRange<int>(1, 8)));
 
                 showTimer = configFile.Bind("3 - UI", "Show Timer", true, new ConfigDescription("Show/hide timer (still running while hidden)"));
                 showSplits = configFile.Bind("3 - UI", "Show Splits", true, new ConfigDescription("Show/hide splits information"));
@@ -72,7 +88,6 @@ namespace SpeedrunManager
                 splitsColumnsSpace = configFile.Bind("3.2 - UI Splits", "Splits Columns Space", 0, new ConfigDescription("UI Splits Columns Space"));
                 splitsRowsSpace = configFile.Bind("3.2 - UI Splits", "Splits Rows Space", 40, new ConfigDescription("UI Splits Rows Space"));
                 
-                    
                 SetupWatcher();
             }
         }
@@ -107,6 +122,7 @@ namespace SpeedrunManager
         {
             if (SpeedrunTimer._text != null)
             {
+                Hud.instance.m_effectsPerRow = effectsPerRow.Value;
                 // Reload config values
                 SpeedrunTimer.UpdateVisibility();
                 SpeedrunTimer.UpdateTimer();
