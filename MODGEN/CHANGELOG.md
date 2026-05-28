@@ -1,5 +1,9 @@
 ### CHANGELOG
 
+## 1.1.0
+
+* 
+
 ## 1.0.2
 
 * Added option to change the number of player effects on hud per row (if you want to avoid the timer to overlap). It will take effect after a change in the player buffs.

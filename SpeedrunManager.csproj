@@ -47,6 +47,9 @@
     <Reference Include="BepInEx">
       <HintPath>..\..\Libs\BepInEx.dll</HintPath>
     </Reference>
+    <Reference Include="gui_framework">
+      <HintPath>..\..\Libs\gui_framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -92,6 +95,7 @@
     <Compile Include="Patches\Splits.cs" />
     <Compile Include="SpeedrunManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\CustomInputField.cs" />
     <Compile Include="UI\ResetConfirmDialog.cs" />
     <Compile Include="UI\CustomSlider.cs" />
     <Compile Include="UI\SpeedrunConfigPanel.cs" />
