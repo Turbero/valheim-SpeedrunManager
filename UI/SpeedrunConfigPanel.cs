@@ -8,8 +8,8 @@ namespace SpeedrunManager.UI
     {
         public static GameObject panel;
         private static CustomSlider customSliderShowTimer;
-        //private static CustomSlider customSliderTimerPositionX;
-        private static CustomInputField customTimerPositionX;
+        private static CustomSlider customSliderTimerPositionX;
+        //private static CustomInputField customInputTimerPositionX;
         private static CustomSlider customSliderTimerPositionY;
         private static CustomSlider customSliderFontTimer;
         private static CustomSlider customSliderSplitsPositionX;
@@ -22,7 +22,7 @@ namespace SpeedrunManager.UI
         private static CustomSlider customSliderRunType;
         private static CustomSlider customSliderShowSplits;
 
-        private static CustomInputField effectsPerRow;
+        //private static CustomInputField effectsPerRow;
 
         private static ResetConfirmDialog resetConfirmDialog;
 
@@ -95,7 +95,7 @@ namespace SpeedrunManager.UI
             addSplitsSliders();
             
             //Input fields tests
-            effectsPerRow = new CustomInputField(
+            /*effectsPerRow = new CustomInputField(
                 id: "EffectsPerRowInput",
                 title: "Effects Per Row",
                 sizeDeltaField: new Vector2(70, 40),
@@ -114,28 +114,7 @@ namespace SpeedrunManager.UI
                     Logger.Log("inputField changed to " + value);
                     ConfigurationFile.effectsPerRow.Value = result;
                 }
-            });
-            
-            effectsPerRow = new CustomInputField(
-                id: "EffectsPerRowInput",
-                title: "Effects Per Row",
-                sizeDeltaField: new Vector2(70, 40),
-                position: new Vector2(-300, -50),
-                value: ConfigurationFile.effectsPerRow.Value.ToString(),
-                initValue: "7",
-                contentType: TMP_InputField.ContentType.IntegerNumber,
-                characterLimit: 1,
-                hasResetButton: true
-            );
-            effectsPerRow.getGameObject().transform.SetParent(panel.transform, false);
-            effectsPerRow.OnValueChanged(value =>
-            {
-                if (int.TryParse(value, out var result))
-                {
-                    Logger.Log("inputField changed to " + value);
-                    ConfigurationFile.effectsPerRow.Value = result;
-                }
-            });
+            });*/
 
             //Reset dialog
             resetConfirmDialog = new ResetConfirmDialog();
@@ -185,7 +164,7 @@ namespace SpeedrunManager.UI
                 ConfigurationFile.speedrunType.Value = value.Equals(1f) ? SpeedrunType.Permadeath : SpeedrunType.InfiniteLives;
             });
             //X
-            customTimerPositionX = new CustomInputField(
+            /*customInputTimerPositionX = new CustomInputField(
                 id: "TimerPositionXSlider",
                 title: "Timer X-ayis",
                 sizeDeltaField: new Vector2(70, 40),
@@ -201,14 +180,14 @@ namespace SpeedrunManager.UI
                 //valueDesc: ConfigurationFile.positionTimer.Value.x.ToGlobalInvariantString(),
                 hasResetButton: true
             );
-            customTimerPositionX.getGameObject().transform.SetParent(panel.transform, false);
-            customTimerPositionX.OnValueChanged(value =>
+            customInputTimerPositionX.getGameObject().transform.SetParent(panel.transform, false);
+            customInputTimerPositionX.OnValueChanged(value =>
             {
                 Logger.Log("slider changed to " + value);
-                customTimerPositionX.updateTextValue(value);
+                customInputTimerPositionX.updateTextValue(value);
                 ConfigurationFile.positionTimer.Value = new Vector2(float.Parse(value), ConfigurationFile.positionTimer.Value.y);
-            });
-            /*customSliderTimerPositionX = new CustomSlider(
+            });*/
+            customSliderTimerPositionX = new CustomSlider(
                 name: "TimerPositionXSlider",
                 minValue: 0,
                 maxValue: 2000,
@@ -229,7 +208,7 @@ namespace SpeedrunManager.UI
                 Logger.Log("slider changed to " + value);
                 customSliderTimerPositionX.updateTextValue(value.ToGlobalInvariantString());
                 ConfigurationFile.positionTimer.Value = new Vector2(value, ConfigurationFile.positionTimer.Value.y);
-            });*/
+            });
             //Y
             customSliderTimerPositionY = new CustomSlider(
                 name: "TimerPositionYSlider",
