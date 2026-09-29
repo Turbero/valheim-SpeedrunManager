@@ -12,15 +12,21 @@ namespace SpeedrunManager
         Permadeath,
         InfiniteLives
     }
+    
+    public enum Sort
+    {
+        Ascending,
+        Descending
+    }
 
     public class DefaultUIPositions
     {
-        public static readonly Vector2 positionTimer = new Vector2(885, 20);
-        public static readonly int fontSizeTimer = 64;
+        public static readonly Vector2 positionTimer = new Vector2(1570, 1000);
+        public static readonly int fontSizeTimer = 54;
         
-        public static readonly Vector2 positionSplits = new Vector2(630, 8);
+        public static readonly Vector2 positionSplits = new Vector2(1780, 620);
         public static readonly int fontSizeSplits = 20;
-        public static readonly int splitsColumnSize = 4;
+        public static readonly int splitsColumnSize = 8;
         public static readonly int splitsColumnsSpace = 0;
         public static readonly int splitsRowsSpace = 40;
     }
@@ -40,6 +46,7 @@ namespace SpeedrunManager
         public static ConfigEntry<bool> countHuginnInitTravelAsPartOfTimer;
         public static ConfigEntry<bool> overrideBossSplitTimerIfKilledAgain;
         public static ConfigEntry<int> effectsPerRow;
+        public static ConfigEntry<string> fontNameTimer;
         
         //Timer configuration
         public static ConfigEntry<bool> showTimer;
@@ -49,6 +56,7 @@ namespace SpeedrunManager
         public static ConfigEntry<int> fontSizeTimer;
         //Splits configuration
         public static ConfigEntry<bool> showSplits;
+        public static ConfigEntry<string> fontNameSplits;
         public static ConfigEntry<Vector2> positionSplits;
         public static ConfigEntry<Color> colorSplits;
         public static ConfigEntry<float> colorWidthSplits;
@@ -56,6 +64,7 @@ namespace SpeedrunManager
         public static ConfigEntry<int> splitsColumnSize;
         public static ConfigEntry<int> splitsColumnsSpace;
         public static ConfigEntry<int> splitsRowsSpace;
+        public static ConfigEntry<Sort> splitSort;
         
 
         internal static void LoadConfig(BaseUnityPlugin plugin)
@@ -73,21 +82,24 @@ namespace SpeedrunManager
 
                 showTimer = configFile.Bind("3 - UI", "Show Timer", true, new ConfigDescription("Show/hide timer (still running while hidden)"));
                 showSplits = configFile.Bind("3 - UI", "Show Splits", true, new ConfigDescription("Show/hide splits information"));
-                
-                positionTimer = configFile.Bind("3.1 - UI Timer", "Position", new Vector2(885, 20), new ConfigDescription("UI Timer position"));
+                fontNameTimer = configFile.Bind("3 - UI", "Font Timer", "segoeui.ttf", new ConfigDescription("Choose a font file name on your computer for a custom timer font style (Example: segoeui.ttf). Empty = default game font"));
+                fontNameSplits = configFile.Bind("3 - UI", "Font Splits", "segoeui.ttf", new ConfigDescription("Choose a font file name on your computer for a custom splits font style (Example: segoeui.ttf). Empty = default game font"));
+
+                positionTimer = configFile.Bind("3.1 - UI Timer", "Position", DefaultUIPositions.positionTimer, new ConfigDescription("UI Timer position"));
                 colorTimer = configFile.Bind("3.1 - UI Timer", "Color", new Color(0, 1, 0), new ConfigDescription("UI Timer color"));
                 colorWidthTimer = configFile.Bind("3.1 - UI Timer", "Color Intensity", 0.15f, new ConfigDescription("UI Timer color intensity (recommended between 0 and 0.5f)"));
-                fontSizeTimer = configFile.Bind("3.1 - UI Timer", "Size", 64, new ConfigDescription("UI Timer size"));
+                fontSizeTimer = configFile.Bind("3.1 - UI Timer", "Size", DefaultUIPositions.fontSizeTimer, new ConfigDescription("UI Timer size"));
                 colorTimerAfterDyingInPermadeath = configFile.Bind("3.1 - UI Timer", "Timer Color After Dying In Permadeath", new Color(1, 0, 0), "Timer color after dying for first time in permadeath mode");
 
-                positionSplits = configFile.Bind("3.2 - UI Splits", "Splits Position", new Vector2(630, 8), new ConfigDescription("UI Splits position"));
+                positionSplits = configFile.Bind("3.2 - UI Splits", "Splits Position", DefaultUIPositions.positionSplits, new ConfigDescription("UI Splits position"));
                 colorSplits = configFile.Bind("3.2 - UI Splits", "Splits Color", Color.white, new ConfigDescription("UI Splits color"));
                 colorWidthSplits = configFile.Bind("3.2 - UI Splits", "Splits Color Intensity", 0.05f, new ConfigDescription("UI Splits color intensity (recommended between 0 and 0.5f)"));
-                fontSizeSplits = configFile.Bind("3.2 - UI Splits", "Splits Font Size", 20, new ConfigDescription("UI Splits size"));
-                splitsColumnSize = configFile.Bind("3.2 - UI Splits", "Splits Column Size", 4, new ConfigDescription("UI Splits size", new AcceptableValueRange<int>(4, 8)));
-                splitsColumnsSpace = configFile.Bind("3.2 - UI Splits", "Splits Columns Space", 0, new ConfigDescription("UI Splits Columns Space"));
-                splitsRowsSpace = configFile.Bind("3.2 - UI Splits", "Splits Rows Space", 40, new ConfigDescription("UI Splits Rows Space"));
-                
+                fontSizeSplits = configFile.Bind("3.2 - UI Splits", "Splits Font Size", DefaultUIPositions.fontSizeSplits, new ConfigDescription("UI Splits size"));
+                splitsColumnSize = configFile.Bind("3.2 - UI Splits", "Splits Column Size", DefaultUIPositions.splitsColumnSize, new ConfigDescription("UI Splits size", new AcceptableValueRange<int>(4, 8)));
+                splitsColumnsSpace = configFile.Bind("3.2 - UI Splits", "Splits Columns Space", DefaultUIPositions.splitsColumnsSpace, new ConfigDescription("UI Splits Columns Space"));
+                splitsRowsSpace = configFile.Bind("3.2 - UI Splits", "Splits Rows Space", DefaultUIPositions.splitsRowsSpace, new ConfigDescription("UI Splits Rows Space"));
+                splitSort = configFile.Bind("3.2 - UI Splits", "Splits Sort", Sort.Ascending, new ConfigDescription("UI Splits Sort"));
+
                 SetupWatcher();
             }
         }
@@ -123,6 +135,7 @@ namespace SpeedrunManager
             if (SpeedrunTimer._text != null)
             {
                 Hud.instance.m_effectsPerRow = effectsPerRow.Value;
+                SpeedrunTimer._text.font = ModFonts.GetFontTimer(true);
                 // Reload config values
                 SpeedrunTimer.UpdateVisibility();
                 SpeedrunTimer.UpdateTimer();
