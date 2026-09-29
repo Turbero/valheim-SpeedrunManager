@@ -28,20 +28,29 @@ namespace SpeedrunManager.UI
             if (_text != null)
                 return;
 
-            GameObject textObj = new GameObject("SpeedrunTimerText", typeof(RectTransform), typeof(TextMeshProUGUI));
-            textObj.transform.SetParent(hud.transform, false);
+            GameObject timerObj = new GameObject("SpeedrunTimer", typeof(RectTransform));
+            timerObj.transform.SetParent(hud.transform, false);
 
-            rect = textObj.GetComponent<RectTransform>();
+            rect = timerObj.GetComponent<RectTransform>();
             rect.anchorMin = new Vector2(0, 1);
             rect.anchorMax = new Vector2(0, 1);
             rect.pivot = new Vector2(0, 1);
             rect.anchoredPosition = ConfigurationFile.positionTimer.Value;
             rect.sizeDelta = new Vector2(500, 80);
-
-            _text = textObj.GetComponent<TextMeshProUGUI>();
+            
+            GameObject timerBkgObj = new GameObject("SpeedrunTimerBackground", typeof(RectTransform), typeof(Image));
+            timerBkgObj.transform.SetParent(timerObj.transform, false);
+            timerBkgObj.GetComponent<RectTransform>().sizeDelta = new Vector2(250, 70);
+            Image background = timerBkgObj.GetComponent<Image>();
+            background.color = new Color(0f, 0f, 0f, 0.75f);
+            
+            GameObject timerTextObj = new GameObject("SpeedrunTimerText", typeof(RectTransform), typeof(TextMeshProUGUI));
+            timerTextObj.transform.SetParent(timerObj.transform, false);
+            _text = timerTextObj.GetComponent<TextMeshProUGUI>();
             _text.fontSize = ConfigurationFile.fontSizeTimer.Value;
             _text.alignment = TextAlignmentOptions.Left;
-            _text.font = ModUtils.getFontAsset("Valheim-Norse");
+            TMP_FontAsset font = ModFonts.GetFontTimer();
+            _text.font = font;
 
             UpdateTimerUI();
             
@@ -136,7 +145,10 @@ namespace SpeedrunManager.UI
             int splitPosX = splitsTopLeftPosX;
             int splitPosY = splitsTopLeftPosY;
             int count = 0;
-            foreach (var split in splits)
+            var splitsToShow = new List<Split>(splits);
+            if (ConfigurationFile.splitSort.Value == Sort.Descending)
+                splitsToShow.Reverse();
+            foreach (var split in splitsToShow)
             {
                 string translatedBossName = Localization.instance.Localize(split.BossName.GetTranslationKey());
                 Logger.Log("Drawing "+translatedBossName+" split");
@@ -168,7 +180,7 @@ namespace SpeedrunManager.UI
                 textTimeObj.transform.SetParent(goSplitsTimers.transform);
                 textTimeObj.fontSize = ConfigurationFile.fontSizeSplits.Value;
                 textTimeObj.alignment = TextAlignmentOptions.Left;
-                textTimeObj.font = ModUtils.getFontAsset("Valheim-Norse");
+                textTimeObj.font = ModFonts.GetFontSplits();
                 textTimeObj.color = ConfigurationFile.colorSplits.Value;
                 textTimeObj.outlineColor = new Color32(
                     (byte)(textTimeObj.color.r * 255f),

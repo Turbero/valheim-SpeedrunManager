@@ -21,7 +21,7 @@ namespace SpeedrunManager
             var field = typeof(Game).GetField("m_playerProfile", BindingFlags.Instance | BindingFlags.NonPublic);
 
             var profile = (PlayerProfile)field?.GetValue(Game.instance);
-            return profile?.m_playerStats.m_stats;
+            return profile?.m_playerStats[0].m_stats;
         }
 
         public static string GetSpeedrunKnownTextKey(string name)
