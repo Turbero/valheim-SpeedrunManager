@@ -1,5 +1,12 @@
 ### CHANGELOG
 
+## 1.0.4
+
+* New default font style and screen position for timer and splits in the lower right corner
+* Added option to use custom font names on your computer in the timer and splits (default = segoeui.ttf)
+* Added command to print list of available font style names on the computer in the game console
+* Added option to sort splits in reverse or regular order
+
 ## 1.0.3
 
 * Recompiled for compatibility with 1.0 
