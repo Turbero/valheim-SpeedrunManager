@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using SpeedrunManager.Patches;
 using SpeedrunManager.UI;
+using UnityEngine;
 
 namespace SpeedrunManager
 {
-    public class SplitsCommands {
-        public static void RegisterConsoleCommand()
+    public class Commands {
+        public static void RegisterConsoleCommands()
         {
             new Terminal.ConsoleCommand("speedrun_set_split", "[boss_prefab_id] [timer_value]", args =>
             {
@@ -49,6 +50,23 @@ namespace SpeedrunManager
 
                 foreach (var key in keysToDelete)
                     dicKnownTexts.Remove(key);
+            });
+            new Terminal.ConsoleCommand("print_available_fonts", "Prints available fonts you can use on this computer for the timer and splits", args =>
+            {
+                if (args.Args.Length < 1)
+                {
+                    args.Context.AddString("Usage: print_available_fonts");
+                    return;
+                }
+                foreach (var fontPath in Font.GetPathsToOSFonts())
+                {
+                    if (fontPath.LastIndexOf("/", StringComparison.Ordinal) >= 0)
+                        Console.instance.AddString(fontPath.Substring(fontPath.LastIndexOf("/", StringComparison.Ordinal) + 1));
+                    else if (fontPath.LastIndexOf("\\", StringComparison.Ordinal) >= 0)
+                        Console.instance.AddString(fontPath.Substring(fontPath.LastIndexOf("\\", StringComparison.Ordinal) + 1));
+                    else
+                        Console.instance.AddString(fontPath);
+                }
             });
         }
     }
