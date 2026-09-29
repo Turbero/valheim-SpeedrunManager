@@ -21,7 +21,7 @@ namespace SpeedrunManager
 
     public class DefaultUIPositions
     {
-        public static readonly Vector2 positionTimer = new Vector2(1570, 1000);
+        public static readonly Vector2 positionTimer = new Vector2(1540, 1000);
         public static readonly int fontSizeTimer = 54;
         
         public static readonly Vector2 positionSplits = new Vector2(1780, 620);
