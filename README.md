@@ -2,17 +2,17 @@
 
 Speedrun Manager is a mod that integrates a built-in timer to do speedruns in Valheim.
 
+![](https://i.imgur.com/7etoVrw.jpeg)
+
 The way it works is by calculating the time you have spent in and out of bases from the player stats, which gives you the total amount of time played in the game. This way when you log in back to the game the timer is restored from the moment it was.
 
 When you kill a boss, the timestamp is saved so you see it on screen and the next time you log in this information is recovered.
 
-The timer is associated to the world and character you select. If you select same character but different world, a new timer associated to that world will take effect.
+Click the hotkey to configure the speedrun mode and timer position while into a game ('Y' by default)
 
-![](https://i.imgur.com/y59eF6P.png)
+![](https://i.imgur.com/VBPHMay.jpeg)
 
-Click the hotkey to configure the speedrun while into a game ('Y' by default)
-
-![](https://i.imgur.com/99cUim7.png)
+The timer is associated to the world and character you select. If you select same character but different world, a new timer associated to that world will take effect (not recommended though, use a new character in each world!)
 
 * The progress is saved within the player data
 * You can customize where the timer is shown and represented in the UI
@@ -23,7 +23,9 @@ Click the hotkey to configure the speedrun while into a game ('Y' by default)
 * Create a new player and wait for the character to be able to move it when Huginn drops him off on the ground.
 * The timer will start running
 * Start killing bosses to show splits on screen
-* Reset your progress any time and start over (use carefully: this will reset your deaths, timeInBase and timeOutBase player stats)
+* If you die in permadeath mode, the timer will stop and will turn red
+
+Reset your progress any time and start over (use carefully: this will reset your deaths, timeInBase and timeOutBase player stats)
 
 ## About myself
 
