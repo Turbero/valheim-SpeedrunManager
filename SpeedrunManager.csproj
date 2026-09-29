@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\AppData\Roaming\Thunderstore Mod Manager\DataFolder\Valheim\profiles\Default\BepInEx\plugins\turbero-SpeedrunManager\</OutputPath>
+    <OutputPath>..\..\..\AppData\Roaming\com.kesomannen.gale\valheim\profiles\Default\BepInEx\plugins\turbero-SpeedrunManager\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -88,7 +88,9 @@
     <Compile Include="Commands.cs" />
     <Compile Include="ConfigurationFile.cs" />
     <Compile Include="ControllerUtils.cs" />
+    <Compile Include="DragNDrop.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="ModFonts.cs" />
     <Compile Include="ModStatsUtils.cs" />
     <Compile Include="ModUtils.cs" />
     <Compile Include="Patches\Patch.cs" />
