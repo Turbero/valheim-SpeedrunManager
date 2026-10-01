@@ -11,6 +11,7 @@ namespace SpeedrunManager.UI
     {
         private static bool painted = false;
         private static RectTransform rect;
+        private static Image _background;
         public static TextMeshProUGUI _text;
         private static GameObject goSplitsTimers;
         
@@ -40,9 +41,10 @@ namespace SpeedrunManager.UI
             
             GameObject timerBkgObj = new GameObject("SpeedrunTimerBackground", typeof(RectTransform), typeof(Image));
             timerBkgObj.transform.SetParent(timerObj.transform, false);
+            timerBkgObj.SetActive(false);
             timerBkgObj.GetComponent<RectTransform>().sizeDelta = new Vector2(250, 70);
-            Image background = timerBkgObj.GetComponent<Image>();
-            background.color = new Color(0f, 0f, 0f, 0.75f);
+            _background = timerBkgObj.GetComponent<Image>();
+            _background.color = new Color(0f, 0f, 0f, 0.75f);
             
             GameObject timerTextObj = new GameObject("SpeedrunTimerText", typeof(RectTransform), typeof(TextMeshProUGUI));
             timerTextObj.transform.SetParent(timerObj.transform, false);
@@ -265,6 +267,7 @@ namespace SpeedrunManager.UI
                     _lastRealtime = Time.realtimeSinceStartupAsDouble;
                     _displayedTime = 0;
                     _lastStatTime = 0;
+                    _background.gameObject.SetActive(true);
                 } else
                     return;
             }
@@ -274,6 +277,7 @@ namespace SpeedrunManager.UI
             UpdateTimerUI();
             
             painted = true;
+            _background.gameObject.SetActive(true);
         }
 
         public static void UpdateTimer()
