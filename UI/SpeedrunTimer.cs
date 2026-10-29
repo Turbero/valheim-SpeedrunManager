@@ -87,47 +87,53 @@ namespace SpeedrunManager.UI
         {
             Logger.Log("Loading splits...");
             
-            string result = ModStatsUtils.GetSpeedrunKnownTextValue("Eikthyr");
+            string result = ModStatsUtils.GetSpeedrunKnownTextValue(nameof(BossNameEnum.Eikthyr));
             if (result != null)
             {
                 Logger.Log("Found split for Eikthyr...");
                 splits.Add(new Split(BossNameEnum.Eikthyr, result));
             }
-            result = ModStatsUtils.GetSpeedrunKnownTextValue("gd_king");
+            result = ModStatsUtils.GetSpeedrunKnownTextValue(nameof(BossNameEnum.gd_king));
             if (result != null)
             {
                 Logger.Log("Found split for The Elder...");
                 splits.Add(new Split(BossNameEnum.gd_king, result));
             }
-            result = ModStatsUtils.GetSpeedrunKnownTextValue("Bonemass");
+            result = ModStatsUtils.GetSpeedrunKnownTextValue(nameof(BossNameEnum.Bonemass));
             if (result != null)
             {
                 Logger.Log("Found split for Bonemass...");
                 splits.Add(new Split(BossNameEnum.Bonemass, result));
             }
-            result = ModStatsUtils.GetSpeedrunKnownTextValue("Dragon");
+            result = ModStatsUtils.GetSpeedrunKnownTextValue(nameof(BossNameEnum.Dragon));
             if (result != null)
             {
                 Logger.Log("Found split for Moder...");
                 splits.Add(new Split(BossNameEnum.Dragon, result));
             }
-            result = ModStatsUtils.GetSpeedrunKnownTextValue("GoblinKing");
+            result = ModStatsUtils.GetSpeedrunKnownTextValue(nameof(BossNameEnum.GoblinKing));
             if (result != null)
             {
                 Logger.Log("Found split for Yagluth...");
                 splits.Add(new Split(BossNameEnum.GoblinKing, result));
             }
-            result = ModStatsUtils.GetSpeedrunKnownTextValue("SeekerQueen");
+            result = ModStatsUtils.GetSpeedrunKnownTextValue(nameof(BossNameEnum.SeekerQueen));
             if (result != null)
             {
                 Logger.Log("Found split for The Queen...");
                 splits.Add(new Split(BossNameEnum.SeekerQueen, result));
             }
-            result = ModStatsUtils.GetSpeedrunKnownTextValue("Fader");
+            result = ModStatsUtils.GetSpeedrunKnownTextValue(nameof(BossNameEnum.Fader));
             if (result != null)
             {
                 Logger.Log("Found split for Fader...");
                 splits.Add(new Split(BossNameEnum.Fader, result));
+            }
+            result = ModStatsUtils.GetSpeedrunKnownTextValue(nameof(BossNameEnum.FrozenKing_p3));
+            if (result != null)
+            {
+                Logger.Log("Found split for FrozenKing...");
+                splits.Add(new Split(BossNameEnum.FrozenKing_p3, result));
             }
             
             DrawSplits();
