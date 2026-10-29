@@ -19,7 +19,10 @@ namespace SpeedrunManager
         
         public static BossNameEnum parseBossName(string value) {
             Logger.Log("Parsing value: " + value);
-            return (BossNameEnum) Enum.Parse(typeof(BossNameEnum), value, true);
+
+            if (Enum.TryParse(value, true, out BossNameEnum boss))
+                return boss;
+            return BossNameEnum.Unknown;
         }
         
         public static TMP_FontAsset getFontAsset(String name)
