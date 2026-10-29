@@ -22,8 +22,12 @@ namespace SpeedrunManager.Patches
                 
                 Logger.Log("Gonna parse "+bossName+"...");
                 BossNameEnum bossNameEnum = ModUtils.parseBossName(bossName);
-                Split split = new Split(bossNameEnum, timerValue);
-                SpeedrunTimer.AddSplitTimer(split);
+                if (bossNameEnum != BossNameEnum.Unknown)
+                {
+                    Split split = new Split(bossNameEnum, timerValue);
+                    SpeedrunTimer.AddSplitTimer(split);
+                } else 
+                    Logger.LogInfo(bossName+" unknown for splits.");
             }
         }
 

@@ -5,13 +5,15 @@ namespace SpeedrunManager
 {
     public enum BossNameEnum
     {
+        [BossNameAttr(null,                     null)]                 Unknown,
         [BossNameAttr("TrophyEikthyr",          "$enemy_eikthyr")]     Eikthyr,
         [BossNameAttr("TrophyTheElder",         "$enemy_gdking")]      gd_king,
         [BossNameAttr("TrophyBonemass",         "$enemy_bonemass")]    Bonemass,
         [BossNameAttr("TrophyDragonQueen",      "$enemy_dragon")]      Dragon,
         [BossNameAttr("TrophyGoblinKing",       "$enemy_goblinking")]  GoblinKing,
         [BossNameAttr("TrophySeekerQueen",      "$enemy_seekerqueen")] SeekerQueen,
-        [BossNameAttr("TrophyFader",            "$enemy_fader")]       Fader
+        [BossNameAttr("TrophyFader",            "$enemy_fader")]       Fader,
+        [BossNameAttr("frozenkingdrop",         "$enemy_frozenking")]  FrozenKing_p3
     }
     
     class BossNameAttr: Attribute
