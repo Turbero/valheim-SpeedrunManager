@@ -1,5 +1,13 @@
 ### CHANGELOG
 
+## 1.0.5
+
+* Added split for Deep North final boss
+
+Fixed:
+* Timer background showing too early when joining a world for first time
+* Bosses from other mods are ignored in splits without log errors
+
 ## 1.0.4
 
 * New default font style and screen position for timer and splits in the lower right corner
