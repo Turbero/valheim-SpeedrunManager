@@ -11,11 +11,11 @@ namespace SpeedrunManager.UI
         private static CustomInputField customInputTimerPositionX;
         private static CustomInputField customInputTimerPositionY;
         private static CustomInputField customInputFontTimer;
-        private static CustomSlider customSliderSplitsPositionX;
-        private static CustomSlider customSliderSplitsPositionY;
+        private static CustomInputField customTimerSplitsPositionX;
+        private static CustomInputField customTimerSplitsPositionY;
         private static CustomSlider customSliderSplitsColumnSize;
-        private static CustomSlider customSliderSplitsColumnsSpace;
-        private static CustomSlider customSliderSplitsRowsSpace;
+        private static CustomInputField customSliderSplitsColumnsSpace;
+        private static CustomInputField customSliderSplitsRowsSpace;
         private static CustomSlider customSliderFontSplits;
 
         private static CustomSlider customSliderRunType;
@@ -97,9 +97,9 @@ namespace SpeedrunManager.UI
             effectsPerRow = new CustomInputField(
                 id: "EffectsPerRowInput",
                 title: "Effects Per Row",
-                sizeDeltaField: new Vector2(80, 32),
-                position: new Vector2(-350, -50),
-                inputPosition: new Vector2(150, 2),
+                sizeDelta: new Vector2(80, 30),
+                position: new Vector2(-396, 50),
+                inputPosition: new Vector2(150, -2),
                 buttonPosition: new Vector2(326, -1),
                 value: ConfigurationFile.effectsPerRow.Value.ToString(),
                 initValue: DefaultUIPositions.effectsPerRow.ToString(),
@@ -168,9 +168,9 @@ namespace SpeedrunManager.UI
             customInputTimerPositionX = new CustomInputField(
                 id: "TimerPositionXInput",
                 title: "Timer X-ayis",
-                sizeDeltaField: new Vector2(80, 32),
+                sizeDelta: new Vector2(80, 30),
                 position: new Vector2(-396, 140),
-                inputPosition: new Vector2(150, 2),
+                inputPosition: new Vector2(150, -2),
                 buttonPosition: new Vector2(326, -1),
                 value: ConfigurationFile.positionTimer.Value.x.ToGlobalInvariantString(),
                 contentType: TMP_InputField.ContentType.IntegerNumber,
@@ -189,9 +189,9 @@ namespace SpeedrunManager.UI
             customInputTimerPositionY = new CustomInputField(
                 id: "TimerPositionYInput",
                 title: "Timer Y-ayis",
-                sizeDeltaField: new Vector2(80, 32),
+                sizeDelta: new Vector2(80, 30),
                 position: new Vector2(-396, 110),
-                inputPosition: new Vector2(150, 2),
+                inputPosition: new Vector2(150, -2),
                 buttonPosition: new Vector2(326, -1),
                 value: ConfigurationFile.positionTimer.Value.y.ToGlobalInvariantString(),
                 contentType: TMP_InputField.ContentType.IntegerNumber,
@@ -208,9 +208,9 @@ namespace SpeedrunManager.UI
             customInputFontTimer = new CustomInputField(
                 id: "FontTimerSlider",
                 title: "Timer Size",
-                sizeDeltaField: new Vector2(80, 32),
+                sizeDelta: new Vector2(80, 30),
                 position: new Vector2(-396, 80),
-                inputPosition: new Vector2(150, 2),
+                inputPosition: new Vector2(150, -2),
                 buttonPosition: new Vector2(326, -1),
                 value: ConfigurationFile.fontSizeTimer.Value.ToString(),
                 contentType: TMP_InputField.ContentType.IntegerNumber,
@@ -252,50 +252,44 @@ namespace SpeedrunManager.UI
                 ConfigurationFile.showSplits.Value = value.Equals(1f);
             });
             //X
-            customSliderSplitsPositionX = new CustomSlider(
-                name: "SplitsPositionXSlider",
-                minValue: 0,
-                maxValue: 1800,
-                sizeDelta: new Vector2(150, 10),
-                position: new Vector2(240, 170),
-                posXIcon: 0,
-                spriteName: null,
-                posXDescription: -186,
-                description: "Splits X-ayis",
-                posXValue: 185,
-                initValue: (int)DefaultUIPositions.positionSplits.x,
-                valueDesc: ConfigurationFile.positionSplits.Value.x.ToGlobalInvariantString(),
+            customTimerSplitsPositionX = new CustomInputField(
+                id: "SplitsPositionXTimer",
+                title: "Splits X-ayis",
+                sizeDelta: new Vector2(80, 30),
+                position: new Vector2(54, 170),
+                inputPosition: new Vector2(150, -2),
+                buttonPosition: new Vector2(326, -1),
+                contentType: TMP_InputField.ContentType.IntegerNumber,
+                value: ConfigurationFile.positionSplits.Value.x.ToGlobalInvariantString(),
+                initValue: DefaultUIPositions.positionSplits.x.ToGlobalInvariantString(),
                 hasResetButton: true
             );
-            customSliderSplitsPositionX.getGameObject().transform.SetParent(panel.transform, false);
-            customSliderSplitsPositionX.OnValueChanged(value =>
+            customTimerSplitsPositionX.getGameObject().transform.SetParent(panel.transform, false);
+            customTimerSplitsPositionX.OnValueChanged(value =>
             {
-                Logger.Log("slider changed to " + value);
-                customSliderSplitsPositionX.updateTextValue(value.ToGlobalInvariantString());
-                ConfigurationFile.positionSplits.Value = new Vector2(value, ConfigurationFile.positionSplits.Value.y);
+                Logger.Log("input changed to " + value);
+                customTimerSplitsPositionX.updateTextValue(value);
+                ConfigurationFile.positionSplits.Value = new Vector2(float.Parse(value), ConfigurationFile.positionSplits.Value.y);
             });
             //Y
-            customSliderSplitsPositionY = new CustomSlider(
-                name: "SplitsPositionYSlider",
-                minValue: 0,
-                maxValue: 960,
-                sizeDelta: new Vector2(150, 10),
-                position: new Vector2(240, 140),
-                posXIcon: 0,
-                spriteName: null,
-                posXDescription: -186,
-                description: "Splits Y-ayis",
-                posXValue: 185,
-                initValue: (int)DefaultUIPositions.positionSplits.y,
-                valueDesc: ConfigurationFile.positionSplits.Value.y.ToGlobalInvariantString(),
+            customTimerSplitsPositionY = new CustomInputField(
+                id: "SplitsPositionYTimer",
+                title: "Splits Y-ayis",
+                sizeDelta: new Vector2(80, 30),
+                position: new Vector2(54, 140),
+                inputPosition: new Vector2(150, -2),
+                buttonPosition: new Vector2(326, -1),
+                contentType: TMP_InputField.ContentType.IntegerNumber,
+                initValue: DefaultUIPositions.positionSplits.y.ToGlobalInvariantString(),
+                value: ConfigurationFile.positionSplits.Value.y.ToGlobalInvariantString(),
                 hasResetButton: true
             );
-            customSliderSplitsPositionY.getGameObject().transform.SetParent(panel.transform, false);
-            customSliderSplitsPositionY.OnValueChanged(value =>
+            customTimerSplitsPositionY.getGameObject().transform.SetParent(panel.transform, false);
+            customTimerSplitsPositionY.OnValueChanged(value =>
             {
-                Logger.Log("slider changed to " + value);
-                customSliderSplitsPositionY.updateTextValue(value.ToGlobalInvariantString());
-                ConfigurationFile.positionSplits.Value = new Vector2(ConfigurationFile.positionSplits.Value.x, value);
+                Logger.Log("input changed to " + value);
+                customTimerSplitsPositionY.updateTextValue(value);
+                ConfigurationFile.positionSplits.Value = new Vector2(ConfigurationFile.positionSplits.Value.x, float.Parse(value));
             });
             
             customSliderSplitsColumnSize = new CustomSlider(
@@ -321,49 +315,43 @@ namespace SpeedrunManager.UI
                 ConfigurationFile.splitsColumnSize.Value = (int)value;
             });
             
-            customSliderSplitsColumnsSpace = new CustomSlider(
-                name: "SplitsColumnsSpace",
-                minValue: 0,
-                maxValue: 2000,
-                sizeDelta: new Vector2(150, 10),
-                position: new Vector2(240, 80),
-                posXIcon: 0,
-                spriteName: null,
-                posXDescription: -186,
-                description: "Splits Columns Space",
-                posXValue: 185,
-                initValue: DefaultUIPositions.splitsColumnsSpace,
-                valueDesc: ConfigurationFile.splitsColumnsSpace.Value.ToString(),
+            customSliderSplitsColumnsSpace = new CustomInputField(
+                id: "SplitsColumnsSpace",
+                title: "Splits Columns Space",
+                sizeDelta: new Vector2(80, 30),
+                position: new Vector2(54, 80),
+                inputPosition: new Vector2(150, -2),
+                buttonPosition: new Vector2(326, -1),
+                contentType: TMP_InputField.ContentType.IntegerNumber,
+                initValue: DefaultUIPositions.splitsColumnsSpace.ToString(),
+                value: ConfigurationFile.splitsColumnsSpace.Value.ToString(),
                 hasResetButton: true
             );
             customSliderSplitsColumnsSpace.getGameObject().transform.SetParent(panel.transform, false);
             customSliderSplitsColumnsSpace.OnValueChanged(value =>
             {
                 Logger.Log("slider changed to " + value);
-                customSliderSplitsColumnsSpace.updateTextValue(value.ToGlobalInvariantString());
-                ConfigurationFile.splitsColumnsSpace.Value = (int) (value + 104);
+                customSliderSplitsColumnsSpace.updateTextValue(value);
+                ConfigurationFile.splitsColumnsSpace.Value = int.Parse(value) + 104;
             });
-            customSliderSplitsRowsSpace = new CustomSlider(
-                name: "SplitsRowsSpace",
-                minValue: 40,
-                maxValue: 256,
-                sizeDelta: new Vector2(150, 10),
-                position: new Vector2(240, 50),
-                posXIcon: 0,
-                spriteName: null,
-                posXDescription: -186,
-                description: "Splits Rows Space",
-                posXValue: 185,
-                initValue: DefaultUIPositions.splitsRowsSpace,
-                valueDesc: ConfigurationFile.splitsRowsSpace.Value.ToString(),
+            customSliderSplitsRowsSpace = new CustomInputField(
+                id: "SplitsRowsSpace",
+                title: "Splits Rows Space",
+                sizeDelta: new Vector2(80, 30),
+                position: new Vector2(54, 50),
+                inputPosition: new Vector2(150, -2),
+                buttonPosition: new Vector2(326, -1),
+                contentType: TMP_InputField.ContentType.IntegerNumber,
+                initValue: DefaultUIPositions.splitsRowsSpace.ToString(),
+                value: ConfigurationFile.splitsRowsSpace.Value.ToString(),
                 hasResetButton: true
             );
             customSliderSplitsRowsSpace.getGameObject().transform.SetParent(panel.transform, false);
             customSliderSplitsRowsSpace.OnValueChanged(value =>
             {
                 Logger.Log("slider changed to " + value);
-                customSliderSplitsRowsSpace.updateTextValue(value.ToGlobalInvariantString());
-                ConfigurationFile.splitsRowsSpace.Value = (int)value;
+                customSliderSplitsRowsSpace.updateTextValue(value);
+                ConfigurationFile.splitsRowsSpace.Value = int.Parse(value);
             });
             
             customSliderFontSplits = new CustomSlider(
@@ -371,7 +359,7 @@ namespace SpeedrunManager.UI
                 minValue: 1,
                 maxValue: 256,
                 sizeDelta: new Vector2(150, 10),
-                position: new Vector2(240, 20),
+                position: new Vector2(54, 20),
                 posXIcon: 0,
                 spriteName: null,
                 posXDescription: -186,

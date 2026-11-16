@@ -16,7 +16,7 @@ namespace SpeedrunManager.UI
         private Button resetButton;
 
         public CustomInputField(string id, 
-                            Vector2 sizeDeltaField,
+                            Vector2 sizeDelta,
                             Vector2 position,
                             Vector2 inputPosition,
                             Vector2 buttonPosition,
@@ -39,7 +39,7 @@ namespace SpeedrunManager.UI
             GameObject textFieldInput = GameObject.Find("_GameMain/LoadingGUI/PixelFix/IngameGui/TextInput/panel/TextField");
             inputField = Object.Instantiate(textFieldInput, inputFieldObject.transform);
             inputField.name = "TextField";
-            inputField.GetComponent<RectTransform>().sizeDelta = sizeDeltaField;
+            inputField.GetComponent<RectTransform>().sizeDelta = sizeDelta;
             inputField.GetComponent<RectTransform>().anchoredPosition = inputPosition;
             
             //Input rules
