@@ -8,10 +8,9 @@ namespace SpeedrunManager.UI
     {
         public static GameObject panel;
         private static CustomSlider customSliderShowTimer;
-        private static CustomSlider customSliderTimerPositionX;
-        //private static CustomInputField customInputTimerPositionX;
-        private static CustomSlider customSliderTimerPositionY;
-        private static CustomSlider customSliderFontTimer;
+        private static CustomInputField customInputTimerPositionX;
+        private static CustomInputField customInputTimerPositionY;
+        private static CustomInputField customInputFontTimer;
         private static CustomSlider customSliderSplitsPositionX;
         private static CustomSlider customSliderSplitsPositionY;
         private static CustomSlider customSliderSplitsColumnSize;
@@ -22,7 +21,7 @@ namespace SpeedrunManager.UI
         private static CustomSlider customSliderRunType;
         private static CustomSlider customSliderShowSplits;
 
-        //private static CustomInputField effectsPerRow;
+        private static CustomInputField effectsPerRow;
 
         private static ResetConfirmDialog resetConfirmDialog;
 
@@ -95,13 +94,15 @@ namespace SpeedrunManager.UI
             addSplitsSliders();
             
             //Input fields tests
-            /*effectsPerRow = new CustomInputField(
+            effectsPerRow = new CustomInputField(
                 id: "EffectsPerRowInput",
                 title: "Effects Per Row",
-                sizeDeltaField: new Vector2(70, 40),
+                sizeDeltaField: new Vector2(80, 32),
                 position: new Vector2(-350, -50),
+                inputPosition: new Vector2(150, 2),
+                buttonPosition: new Vector2(326, -1),
                 value: ConfigurationFile.effectsPerRow.Value.ToString(),
-                initValue: "7",
+                initValue: DefaultUIPositions.effectsPerRow.ToString(),
                 contentType: TMP_InputField.ContentType.IntegerNumber,
                 characterLimit: 1,
                 hasResetButton: true
@@ -114,7 +115,7 @@ namespace SpeedrunManager.UI
                     Logger.Log("inputField changed to " + value);
                     ConfigurationFile.effectsPerRow.Value = result;
                 }
-            });*/
+            });
 
             //Reset dialog
             resetConfirmDialog = new ResetConfirmDialog();
@@ -164,95 +165,64 @@ namespace SpeedrunManager.UI
                 ConfigurationFile.speedrunType.Value = value.Equals(1f) ? SpeedrunType.Permadeath : SpeedrunType.InfiniteLives;
             });
             //X
-            /*customInputTimerPositionX = new CustomInputField(
-                id: "TimerPositionXSlider",
+            customInputTimerPositionX = new CustomInputField(
+                id: "TimerPositionXInput",
                 title: "Timer X-ayis",
-                sizeDeltaField: new Vector2(70, 40),
-                position: new Vector2(-300, 140),
-                value: ConfigurationFile.effectsPerRow.Value.ToString(),
+                sizeDeltaField: new Vector2(80, 32),
+                position: new Vector2(-396, 140),
+                inputPosition: new Vector2(150, 2),
+                buttonPosition: new Vector2(326, -1),
+                value: ConfigurationFile.positionTimer.Value.x.ToGlobalInvariantString(),
                 contentType: TMP_InputField.ContentType.IntegerNumber,
-                characterLimit: 1,
-                //minValue: 0,
-                //maxValue: 2000,y
-                //posXDescription: -186,
-                //posXValue: 185,
+                characterLimit: 5,
                 initValue: DefaultUIPositions.positionTimer.x.ToGlobalInvariantString(),
-                //valueDesc: ConfigurationFile.positionTimer.Value.x.ToGlobalInvariantString(),
                 hasResetButton: true
             );
             customInputTimerPositionX.getGameObject().transform.SetParent(panel.transform, false);
             customInputTimerPositionX.OnValueChanged(value =>
             {
-                Logger.Log("slider changed to " + value);
+                Logger.Log("input changed to " + value);
                 customInputTimerPositionX.updateTextValue(value);
                 ConfigurationFile.positionTimer.Value = new Vector2(float.Parse(value), ConfigurationFile.positionTimer.Value.y);
-            });*/
-            customSliderTimerPositionX = new CustomSlider(
-                name: "TimerPositionXSlider",
-                minValue: 0,
-                maxValue: 2000,
-                sizeDelta: new Vector2(150, 10),
-                position: new Vector2(-210, 140),
-                posXIcon: 0,
-                spriteName: null,
-                posXDescription: -186,
-                description: "Timer X-ayis",
-                posXValue: 185,
-                initValue: (int)DefaultUIPositions.positionTimer.x,
-                valueDesc: ConfigurationFile.positionTimer.Value.x.ToGlobalInvariantString(),
-                hasResetButton: true
-            );
-            customSliderTimerPositionX.getGameObject().transform.SetParent(panel.transform, false);
-            customSliderTimerPositionX.OnValueChanged(value =>
-            {
-                Logger.Log("slider changed to " + value);
-                customSliderTimerPositionX.updateTextValue(value.ToGlobalInvariantString());
-                ConfigurationFile.positionTimer.Value = new Vector2(value, ConfigurationFile.positionTimer.Value.y);
             });
             //Y
-            customSliderTimerPositionY = new CustomSlider(
-                name: "TimerPositionYSlider",
-                minValue: 0,
-                maxValue: 1100,
-                sizeDelta: new Vector2(150, 10),
-                position: new Vector2(-210, 110),
-                posXIcon: 0,
-                spriteName: null,
-                posXDescription: -186,
-                description: "Timer Y-ayis",
-                posXValue: 185,
-                initValue: (int)DefaultUIPositions.positionTimer.y,
-                valueDesc: ConfigurationFile.positionTimer.Value.y.ToGlobalInvariantString(),
+            customInputTimerPositionY = new CustomInputField(
+                id: "TimerPositionYInput",
+                title: "Timer Y-ayis",
+                sizeDeltaField: new Vector2(80, 32),
+                position: new Vector2(-396, 110),
+                inputPosition: new Vector2(150, 2),
+                buttonPosition: new Vector2(326, -1),
+                value: ConfigurationFile.positionTimer.Value.y.ToGlobalInvariantString(),
+                contentType: TMP_InputField.ContentType.IntegerNumber,
+                initValue: DefaultUIPositions.positionTimer.y.ToGlobalInvariantString(),
                 hasResetButton: true
             );
-            customSliderTimerPositionY.getGameObject().transform.SetParent(panel.transform, false);
-            customSliderTimerPositionY.OnValueChanged(value =>
+            customInputTimerPositionY.getGameObject().transform.SetParent(panel.transform, false);
+            customInputTimerPositionY.OnValueChanged(value =>
             {
-                Logger.Log("slider changed to " + value);
-                customSliderTimerPositionY.updateTextValue(value.ToGlobalInvariantString());
-                ConfigurationFile.positionTimer.Value = new Vector2(ConfigurationFile.positionTimer.Value.x, value);
+                Logger.Log("input changed to " + value);
+                customInputTimerPositionY.updateTextValue(value);
+                ConfigurationFile.positionTimer.Value = new Vector2(ConfigurationFile.positionTimer.Value.x, float.Parse(value));
             });
-            customSliderFontTimer = new CustomSlider(
-                name: "FontTimerSlider",
-                minValue: 1,
-                maxValue: 256,
-                sizeDelta: new Vector2(150, 10),
-                position: new Vector2(-210, 80),
-                posXIcon: 0,
-                spriteName: null,
-                posXDescription: -186,
-                description: "Timer Size",
-                posXValue: 185,
-                initValue: DefaultUIPositions.fontSizeTimer,
-                valueDesc: ConfigurationFile.fontSizeTimer.Value.ToString(),
+            customInputFontTimer = new CustomInputField(
+                id: "FontTimerSlider",
+                title: "Timer Size",
+                sizeDeltaField: new Vector2(80, 32),
+                position: new Vector2(-396, 80),
+                inputPosition: new Vector2(150, 2),
+                buttonPosition: new Vector2(326, -1),
+                value: ConfigurationFile.fontSizeTimer.Value.ToString(),
+                contentType: TMP_InputField.ContentType.IntegerNumber,
+                initValue: DefaultUIPositions.fontSizeTimer.ToString(),
                 hasResetButton: true
             );
-            customSliderFontTimer.getGameObject().transform.SetParent(panel.transform, false);
-            customSliderFontTimer.OnValueChanged(value =>
+            customInputFontTimer.getGameObject().transform.SetParent(panel.transform, false);
+            customInputFontTimer.OnValueChanged(value =>
             {
                 Logger.Log("slider changed to " + value);
-                customSliderFontTimer.updateTextValue(value.ToGlobalInvariantString());
-                ConfigurationFile.fontSizeTimer.Value = (int)value;
+                customInputFontTimer.updateTextValue(value);
+                ConfigurationFile.fontSizeTimer.Value = int.Parse(value);
             });
             
             //TODO ColorTimerSlider
