@@ -3,6 +3,7 @@
 ## 1.1.0
 
 * Updated in-game panel options with input fields instead of sliders for numeric values
+* Little update of icon
 
 ## 1.0.5
 
