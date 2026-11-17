@@ -10,7 +10,7 @@ When you kill a boss, the timestamp is saved so you see it on screen and the nex
 
 Click the hotkey to configure the speedrun mode and timer position while into a game ('Y' by default)
 
-![](https://i.imgur.com/VBPHMay.jpeg)
+![](https://i.imgur.com/oRUtLcm.jpeg)
 
 The timer is associated to the world and character you select. If you select same character but different world, a new timer associated to that world will take effect (not recommended though, use a new character in each world!)
 

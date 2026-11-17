@@ -16,8 +16,10 @@ namespace SpeedrunManager.UI
         private Button resetButton;
 
         public CustomInputField(string id, 
-                            Vector2 sizeDeltaField,
+                            Vector2 sizeDelta,
                             Vector2 position,
+                            Vector2 inputPosition,
+                            Vector2 buttonPosition,
                             string title,
                             string value,
                             string initValue, 
@@ -37,8 +39,8 @@ namespace SpeedrunManager.UI
             GameObject textFieldInput = GameObject.Find("_GameMain/LoadingGUI/PixelFix/IngameGui/TextInput/panel/TextField");
             inputField = Object.Instantiate(textFieldInput, inputFieldObject.transform);
             inputField.name = "TextField";
-            inputField.GetComponent<RectTransform>().sizeDelta = sizeDeltaField;
-            inputField.GetComponent<RectTransform>().anchoredPosition = new Vector2(145, 0);
+            inputField.GetComponent<RectTransform>().sizeDelta = sizeDelta;
+            inputField.GetComponent<RectTransform>().anchoredPosition = inputPosition;
             
             //Input rules
             inputField.GetComponent<GuiInputField>().contentType = contentType;
@@ -65,14 +67,14 @@ namespace SpeedrunManager.UI
             inputFieldValue.fontSize = 18;
             inputFieldValue.font = ModUtils.getFontAsset("Valheim-AveriaSansLibre");
             inputFieldValue.alignment = TextAlignmentOptions.Left;
-            inputFieldValue.text = value;
+            updateTextValue(value);
             
             //Reset button
             if (hasResetButton) {
                 resetButton = Object.Instantiate(InventoryGui.instance.m_takeAllButton, inputFieldObject.transform);
                 resetButton.name = "ResetButton";
                 ControllerUtils.RemoveHint(resetButton.transform);
-                resetButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(140, 0);
+                resetButton.GetComponent<RectTransform>().anchoredPosition = buttonPosition;
                 resetButton.GetComponent<RectTransform>().sizeDelta = new Vector2(30, 30);
                 resetButton.GetComponentInChildren<TextMeshProUGUI>().text = "R";
                 resetButton.onClick = new Button.ButtonClickedEvent();
@@ -85,7 +87,6 @@ namespace SpeedrunManager.UI
                     InventoryGui.instance.transform.Find("root/Info/Skills").GetComponent<UITooltip>().m_tooltipPrefab);
                 resetTooltip.m_text = "Reset";
             }
-
         }
 
         public GameObject getGameObject()
@@ -101,6 +102,7 @@ namespace SpeedrunManager.UI
         public void updateTextValue(string value)
         {
             inputFieldValue.text = value;
+            inputField.GetComponent<GuiInputField>().text = value;
         }
 
         public string getValue()

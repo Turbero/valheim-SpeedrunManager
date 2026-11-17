@@ -29,6 +29,8 @@ namespace SpeedrunManager
         public static readonly int splitsColumnSize = 8;
         public static readonly int splitsColumnsSpace = 0;
         public static readonly int splitsRowsSpace = 40;
+
+        public static readonly int effectsPerRow = 7;
     }
     
     internal class ConfigurationFile
